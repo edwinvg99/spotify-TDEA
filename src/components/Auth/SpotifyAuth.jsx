@@ -8,7 +8,7 @@ const SpotifyAuth = () => {
   useEffect(() => {
     // Limpiar estados anteriores al montar el componente
     localStorage.removeItem('spotify_token');
-    localStorage.removeItem('auth_state');
+    sessionStorage.removeItem('auth_state');
   }, []);
 
   const handleLogin = async () => {
@@ -17,11 +17,12 @@ const SpotifyAuth = () => {
     try {
       setIsAuthenticating(true);
       
-      // Generar un state seguro
+      // Generar estado seguro y guardarlo
       const state = crypto.randomUUID();
-      localStorage.setItem('auth_state', state);
+      console.log('Generando nuevo estado:', state);
+      sessionStorage.setItem('auth_state', state);
   
-      // Scope necesarios para la aplicación
+      // Scope necesarios
       const scopes = [
         'user-read-private',
         'user-read-email',
@@ -29,31 +30,36 @@ const SpotifyAuth = () => {
         'playlist-modify-public',
         'playlist-modify-private',
         'user-top-read',
-        // Nuevos scopes para reproducción
+        'streaming',
+        'app-remote-control',
         'user-read-playback-state',
         'user-modify-playback-state',
-        'user-read-currently-playing',
-        'streaming',
-        'app-remote-control' // Para control remoto de la reproducción
+        'user-read-currently-playing'
       ].join(' ');
   
+      // Construir y verificar parámetros de autorización
       const params = new URLSearchParams({
         client_id: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
         response_type: 'code',
         redirect_uri: import.meta.env.VITE_REDIRECT_URI,
         state: state,
         scope: scopes,
-        show_dialog: true // Forzar diálogo para ver los nuevos permisos
+        show_dialog: true
       });
+
+      // Verificar que los parámetros requeridos estén presentes
+      if (!params.get('client_id') || !params.get('redirect_uri')) {
+        throw new Error('Faltan credenciales de Spotify en las variables de entorno');
+      }
   
-      console.log('Scopes solicitados:', scopes);
+      console.log('Iniciando autorización con estado:', state);
       const authUrl = `https://accounts.spotify.com/authorize?${params}`;
       window.location.href = authUrl;
       
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error en proceso de login:', error);
       setIsAuthenticating(false);
-      localStorage.removeItem('auth_state');
+      sessionStorage.removeItem('auth_state');
     }
   };
 

@@ -95,3 +95,15 @@ input[type="range"]::-webkit-slider-runnable-track {
 .progress-bar {
   transition: width 0.1s linear;
 }
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .overflow-y-scroll no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+ /* Hide scrollbar for IE, Edge and Firefox */
+  .overflow-y-scroll no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+}
+}

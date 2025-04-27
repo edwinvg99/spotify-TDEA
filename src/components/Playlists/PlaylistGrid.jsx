@@ -1,151 +1,165 @@
 // src/components/PlaylistGrid.jsx
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSpotify } from '../../context/SpotifyContext'; // Usa el contexto
-import { PlaylistSkeleton } from '../common/LoadingSkeletons';
+import { useSpotify } from '../../context/SpotifyContext';
+import PlaylistDetail from './PlaylistDetail';
 
-const PlaylistGrid = () => {
+
+const PlaylistGrid = ({ sidebarMode = false }) => {
   const { token } = useSpotify();
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
 
   useEffect(() => {
     const fetchPlaylists = async () => {
       if (!token) {
         setLoading(false);
-        // No establecer error aquí si la falta de token es el estado normal antes de login
-        // setError('No Spotify token available.');
         return;
       }
 
       try {
-        setLoading(true);
-        setError(null);
-
-        const response = await fetch('https://api.spotify.com/v1/me/playlists?limit=50', {
+        const response = await fetch('https://api.spotify.com/v1/me/playlists', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
-        if (response.status === 401) {
-           // Aquí podrías forzar el logout si no lo hace el contexto global
-           // logout();
-           // throw new Error('Sesión expirada al cargar playlists.');
-           // O simplemente dejar que el dashboard superior maneje el 401
-           console.warn("Token expirado al cargar playlists. Esperando manejo global.");
-           setLoading(false); // Deja de cargar si el token no es válido
-           // No establecer error aquí, el error global del contexto/dashboard lo manejará
-           return;
-        }
-
         if (!response.ok) {
-          const errorBody = await response.json();
-          console.error('API Error al cargar playlists:', response.status, errorBody);
-          throw new Error(`Error al cargar playlists: ${errorBody.error?.message || response.statusText}`);
+          throw new Error('Error al cargar las playlists');
         }
 
         const data = await response.json();
-        // Asegurarse de que data.items es un array antes de setear
-        if (Array.isArray(data.items)) {
-             setPlaylists(data.items);
-        } else {
-            // Manejar caso inesperado si data.items no es un array
-            console.error('API response did not return an array of items:', data);
-            setPlaylists([]); // Setea a array vacío para evitar errores
-            setError('Unexpected API response format.');
-        }
-
-        setLoading(false);
-
+        setPlaylists(data.items || []);
       } catch (error) {
-        console.error('Error en fetchPlaylists:', error);
+        console.error('Error cargando playlists:', error);
         setError(error.message);
+      } finally {
         setLoading(false);
       }
     };
 
-    // Llama a fetchPlaylists solo si el token existe
-    if (token) {
-      fetchPlaylists();
-    } else {
-      // Limpiar si el token se pierde
-      setPlaylists([]);
-      setLoading(false);
-      setError(null);
-    }
+    fetchPlaylists();
+  }, [token]);
 
-  }, [token]); // Dependencia: re-ejecutar si el token del contexto cambia
+  const handlePlaylistClick = (playlist) => {
+    setSelectedPlaylist(playlist);
+  };
 
-  const filteredPlaylists = playlists.filter(playlist =>
-    // Añadir verificación para playlist.name antes de toLowerCase
-    playlist.name?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false // Retorna false si playlist.name es null/undefined
-  );
+  const handleBack = () => {
+    setSelectedPlaylist(null);
+  };
 
-  // Estados de UI (Loading, Error, Empty State)
   if (loading) {
-    return <PlaylistSkeleton />;
+    return (
+      <div className="animate-pulse overflow-y-scroll no-scrollbar">
+        {sidebarMode ? (
+          <div className="space-y-3 overflow-y-scroll no-scrollbar">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <div className="w-12 h-12 bg-gray-700 rounded "></div>
+                <div className="flex-1">
+                  <div className="h-3 bg-gray-700 rounded w-3/4 mb-1"></div>
+                  <div className="h-2 bg-gray-700 rounded w-1/2"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 overflow-y-scroll no-scrollbar" >
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-gray-800 rounded-lg p-4">
+                <div className="aspect-square bg-gray-700 rounded-lg mb-2"></div>
+                <div className="h-4 bg-gray-700 rounded w-3/4"></div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-red-500 text-center py-8">{error}</div>;
-  }
-
-  if (!playlists || playlists.length === 0) {
-      return (
-          <div className="text-white text-center py-8">
-              <p>No se encontraron playlists.</p>
-          </div>
-      );
-  }
-
-
-  return (
-    <div className="p-6">
-      <div className="mb-6">
-        <input
-          type="text"
-          placeholder="Buscar playlist..."
-          className="w-full p-3 bg-gray-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-          onChange={(e) => setSearchTerm(e.target.value)}
-          value={searchTerm}
-        />
+    return (
+      <div className="text-red-500 text-center p-4 overflow-y-scroll no-scrollbar">
+        {error}
       </div>
+    );
+  }
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        {filteredPlaylists.map(playlist => (
-          // Asegurarse de que playlist.id existe
-          playlist.id ? (
-            <Link
-              to={`/playlist/${playlist.id}`}
+  if (sidebarMode) {
+    if (selectedPlaylist) {
+      return (
+        <div className="h-full overflow-y-scroll no-scrollbar">
+          <button
+            onClick={handleBack}
+            className="flex items-center gap-2 text-gray-400 hover:text-white mb-4 p-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+            </svg>
+            Volver a playlists
+          </button>
+          <PlaylistDetail playlistId={selectedPlaylist.id} isInSidebar={true} />
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-2 overflow-y-scroll no-scrollbar">
+        <h3 className="text-white font-semibold mb-3">Tus Playlists</h3>
+        <div className="space-y-2 max-h-[calc(100vh-300px)] overflow-y-scroll no-scrollbar">
+          {playlists.map(playlist => (
+            <button
               key={playlist.id}
-              className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:bg-gray-700 transition-colors duration-200 block"
+              onClick={() => handlePlaylistClick(playlist)}
+              className="w-full flex items-center gap-3 p-2 hover:bg-gray-800 rounded-lg transition-all group text-left"
             >
-              <div className="aspect-square w-full">
-                {/* Verificación para playlist.images[0] */}
-                <img
-                  src={playlist.images?.[0]?.url || '/default-playlist.png'} // Uso seguro de ?.[]
-                  alt={`Portada de ${playlist.name || 'Playlist'}`} // Fallback en alt
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-4">
-                {/* Verificación para playlist.name */}
-                <h3 className="text-white font-bold text-lg truncate">{playlist.name || 'Unnamed Playlist'}</h3>
-                <p className="text-gray-400 text-sm mt-1">
-                   {/* Verificación para playlist.owner y playlist.tracks */}
-                   Por {playlist.owner?.display_name || 'Unknown'} • {playlist.tracks?.total ?? 0} canciones {/* Uso de ?? para default 0 */}
+              <img
+                src={playlist.images?.[0]?.url || '/default-playlist.png'}
+                alt={playlist.name}
+                className="w-12 h-12 rounded object-cover"
+              />
+              <div className="overflow-hidden overflow-y-scroll no-scrollbar">
+                <p className="text-white text-sm font-medium truncate group-hover:text-purple-400">
+                  {playlist.name}
+                </p>
+                <p className="text-gray-400 text-xs truncate">
+                  {playlist.tracks?.total || 0} canciones
                 </p>
               </div>
-            </Link>
-           ) : null // No renderizar si playlist.id no existe
-        ))}
+            </button>
+          ))}
+        </div>
       </div>
-       {playlists.length > 0 && filteredPlaylists.length === 0 && (
-           <div className="text-white text-center py-8">
-               <p>No se encontraron resultados para "{searchTerm}".</p>
-           </div>
-       )}
+    );
+  }
+
+  // Vista normal (no sidebar)
+  return (
+    <div className=" grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4  overflow-y-scroll no-scrollbar bg-red-500 ">
+      {playlists.map(playlist => (
+        <Link
+          key={playlist.id}
+          to={`/playlist/${playlist.id}`}
+          className="bg-gray-800 rounded-lg overflow-hidden hover:bg-gray-700 transition-all group overflow-y-scroll no-scrollbar"
+        >
+          <div className="aspect-square">
+            <img
+              src={playlist.images?.[0]?.url || '/default-playlist.png'}
+              alt={playlist.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="p-4">
+            <h3 className="text-white font-bold truncate group-hover:text-purple-400">
+              {playlist.name}
+            </h3>
+            <p className="text-gray-400 text-sm mt-1">
+              {playlist.tracks?.total || 0} canciones
+            </p>
+          </div>
+        </Link>
+      ))}
     </div>
   );
 };

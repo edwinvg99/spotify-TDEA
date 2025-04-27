@@ -1,124 +1,86 @@
-import { useState, useEffect, useRef } from 'react';
-import { useSpotify } from '../../context/SpotifyContext';
+import { useEffect } from 'react';
 import { useSpotifySDK } from '../../hooks/useSpotifySDK';
-import { PlayerControls } from './PlayerControls';
-import { PlayerSkeleton } from '../common/LoadingSkeletons';
-import { ErrorMessage } from '../common/ErrorMessage';
+import { useSpotify } from '../../context/SpotifyContext';
 
-const SpotifyPlayer = ({ track }) => {
-  const [volume, setVolume] = useState(50);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+const SpotifyPlayer = () => {
   const { token } = useSpotify();
   const { 
-    deviceId, 
+    currentTrack, 
     isPlaying, 
-    progress,
-    playerRef,
-    setIsPlaying,
-    setProgress
-  } = useSpotifySDK(token, volume);
-  const previousTrackRef = useRef(null);
+    togglePlay, 
+    progress, 
+    duration,
+    seekTo,
+    isReady
+  } = useSpotifySDK(token);
 
-  const playTrack = async () => {
-    if (!deviceId || !track) return;
-    
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          uris: [track.uri],
-          position_ms: 0
-        })
-      });
-
-      setIsPlaying(true);
-      previousTrackRef.current = track.uri;
-    } catch (error) {
-      console.error('Error reproduciendo track:', error);
-      // Solo mostrar el error si realmente hay un problema
-      if (error.status !== 404) {
-        setError('Error al reproducir la canción. Por favor, intenta de nuevo.');
-      }
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSeek = (e) => {
+    const position = parseInt(e.target.value);
+    seekTo(position);
   };
 
-  // Efecto para manejar cambios de track
-  useEffect(() => {
-    if (!track?.uri || !deviceId) return;
-
-    // Si es una track diferente o no hay track previa, reproducir
-    if (previousTrackRef.current !== track.uri) {
-      playTrack();
-    }
-  }, [track?.uri, deviceId]);
-
-  // Función para reintentar la reproducción
-  const handleRetry = async () => {
-    setError(null);
-    await playTrack();
-  };
-
-  if (isLoading) {
-    return <PlayerSkeleton />;
-  }
-
-  // Solo mostrar el error si no está reproduciendo
-  if (error && !isPlaying) {
-    return (
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 p-4">
-        <ErrorMessage 
-          error={error}
-          onRetry={handleRetry}
-        />
-      </div>
-    );
-  }
+  if (!currentTrack || !isReady) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 p-4">
-      <div className="max-w-screen-xl mx-auto flex items-center justify-between">
-        {/* Info de la canción */}
-        {track && (
-          <div className="flex items-center space-x-4">
-            <img 
-              src={track.album?.images[0]?.url} 
-              alt={track.name}
-              className="w-14 h-14 rounded"
-            />
-            <div>
-              <p className="text-white font-medium">{track.name}</p>
-              <p className="text-gray-400 text-sm">
-                {track.artists?.map(artist => artist.name).join(', ')}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Controles de reproducción */}
-        <PlayerControls 
-          isPlaying={isPlaying}
-          onTogglePlay={playTrack}
-        />
-
-        {/* Barra de progreso */}
-        <div className="flex-1 mx-6">
-          <div className="h-1 bg-gray-600 rounded-full">
-            <div 
-              className="h-full bg-green-500 rounded-full transition-all duration-100"
-              style={{ width: `${progress}%` }}
-            />
+    <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 p-4 z-[9999]">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        {/* Información de la canción */}
+        <div className="flex items-center gap-4 min-w-0 flex-1">
+          <img
+            src={currentTrack.album?.images?.[0]?.url || '/default-song.png'}
+            alt={currentTrack.name}
+            className="w-14 h-14 rounded shadow-lg"
+          />
+          <div className="min-w-0">
+            <h3 className="text-white font-medium text-sm truncate">
+              {currentTrack.name}
+            </h3>
+            <p className="text-gray-400 text-xs truncate">
+              {currentTrack.artists?.map(artist => artist.name).join(', ')}
+            </p>
           </div>
         </div>
+
+        {/* Controles centrales */}
+        <div className="flex flex-col items-center gap-2 flex-1 max-w-xl">
+          <button
+            onClick={togglePlay}
+            className="p-2 rounded-full bg-white hover:bg-gray-200 transition-colors"
+          >
+            {isPlaying ? (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6M9 9h1v6H9zm5 0h1v6h-1z" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              </svg>
+            )}
+          </button>
+
+          {/* Barra de progreso */}
+          <div className="w-full flex items-center gap-2">
+            <span className="text-xs text-gray-400 w-10">
+              {Math.floor(progress / 1000 / 60)}:
+              {String(Math.floor((progress / 1000) % 60)).padStart(2, '0')}
+            </span>
+            <input
+              type="range"
+              min="0"
+              max={duration}
+              value={progress}
+              onChange={handleSeek}
+              className="flex-1 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer"
+            />
+            <span className="text-xs text-gray-400 w-10">
+              {Math.floor(duration / 1000 / 60)}:
+              {String(Math.floor((duration / 1000) % 60)).padStart(2, '0')}
+            </span>
+          </div>
+        </div>
+
+        {/* Espacio para mantener el layout centrado */}
+        <div className="flex-1"></div>
       </div>
     </div>
   );

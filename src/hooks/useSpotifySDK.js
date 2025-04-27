@@ -1,245 +1,135 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-export const useSpotifySDK = (token, initialVolume = 50) => {
-  const [deviceId, setDeviceId] = useState(null);
+export const useSpotifySDK = (token) => {
+  const [player, setPlayer] = useState(null);
+  const [isReady, setIsReady] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const playerRef = useRef(null);
-  const initializingRef = useRef(false);
-  const progressInterval = useRef(null);
+  const [duration, setDuration] = useState(0);
 
-  const updateProgress = async () => {
-    if (!playerRef.current) return;
-
-    try {
-      const state = await playerRef.current.getCurrentState();
-      if (state) {
-        const progressPercent = (state.position / state.duration) * 100;
-        setProgress(progressPercent);
-      }
-    } catch (error) {
-      console.error('Error actualizando progreso:', error);
-    }
-  };
-
-  const startProgressInterval = () => {
-    // Limpiar intervalo existente si hay alguno
-    if (progressInterval.current) {
-      clearInterval(progressInterval.current);
-    }
-
-    // Crear nuevo intervalo que actualiza cada 1000ms (1 segundo)
-    progressInterval.current = setInterval(updateProgress, 1000);
-  };
-
-  const stopProgressInterval = () => {
-    if (progressInterval.current) {
-      clearInterval(progressInterval.current);
-      progressInterval.current = null;
-    }
-  };
-
-  // Modificar el listener de estado del player
+  // Inicializar el SDK de Spotify
   useEffect(() => {
-    if (!playerRef.current) return;
+    if (!token) return;
 
-    playerRef.current.addListener('player_state_changed', state => {
-      if (state) {
-        setIsPlaying(!state.paused);
-        
-        if (state.duration > 0) {
-          const progressPercent = (state.position / state.duration) * 100;
-          setProgress(progressPercent);
-        }
+    const script = document.createElement('script');
+    script.src = 'https://sdk.scdn.co/spotify-player.js';
+    script.async = true;
 
-        // Si está reproduciendo, iniciar intervalo de progreso
-        if (!state.paused) {
-          startProgressInterval();
-        } else {
-          stopProgressInterval();
-        }
-      }
-    });
+    document.body.appendChild(script);
 
-    return () => {
-      stopProgressInterval();
-      if (playerRef.current) {
-        playerRef.current.removeListener('player_state_changed');
-      }
-    };
-  }, [playerRef.current]);
-
-  // Limpiar intervalo cuando el componente se desmonta
-  useEffect(() => {
-    return () => {
-      stopProgressInterval();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!token || initializingRef.current) return;
-
-    const initializePlayer = async () => {
-      try {
-        const initSpotifyPlayer = () => {
-          const player = new window.Spotify.Player({
-            name: 'Spotify Clone Player',
-            getOAuthToken: cb => { cb(token); },
-            volume: initialVolume / 100,
-            enableMediaSession: true,
-            // Agregar configuración para manejar errores y eventos
-            errorListener: (error) => {
-              // Ignorar errores específicos de cpapi.spotify.com
-              if (error.message?.includes('cpapi.spotify.com')) {
-                return;
-              }
-              console.error('Player Error:', error);
-            }
-          });
-
-          // Agregar listeners mejorados
-          player.addListener('ready', ({ device_id }) => {
-            console.log('Player listo:', device_id);
-            setDeviceId(device_id);
-
-            // Activar este dispositivo y manejar errores silenciosamente
-            fetch('https://api.spotify.com/v1/me/player', {
-              method: 'PUT',
-              headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                device_ids: [device_id],
-                play: false
-              })
-            }).catch(() => {
-              // Ignorar errores de activación del dispositivo
-            });
-          });
-
-          player.addListener('initialization_error', ({ message }) => {
-            if (!message.includes('cpapi.spotify.com')) {
-              console.error('Error de inicialización:', message);
-            }
-          });
-
-          player.addListener('authentication_error', ({ message }) => {
-            console.error('Error de autenticación:', message);
-          });
-
-          player.addListener('account_error', ({ message }) => {
-            console.error('Error de cuenta:', message);
-          });
-
-          // Conectar el player y manejar errores
-          player.connect().then(success => {
-            if (success) {
-              playerRef.current = player;
-            } else {
-              console.error('Error conectando el player');
-            }
-          }).catch(error => {
-            // Ignorar errores específicos de cpapi.spotify.com
-            if (!error.message?.includes('cpapi.spotify.com')) {
-              console.error('Error conectando:', error);
-            }
-          });
-        };
-
-        // Asignar la función de callback global
-        window.onSpotifyWebPlaybackSDKReady = initSpotifyPlayer;
-
-        // Si el SDK ya está cargado, inicializar directamente
-        if (window.Spotify) {
-          initSpotifyPlayer();
-          return;
-        }
-
-        // Si no está cargado, cargar el script
-        const script = document.createElement('script');
-        script.src = 'https://sdk.scdn.co/spotify-player.js';
-        script.async = true;
-
-        // Manejar errores de carga del script
-        script.onerror = (error) => {
-          console.error('Error cargando Spotify SDK:', error);
-          initializingRef.current = false;
-        };
-
-        document.body.appendChild(script);
-      } catch (error) {
-        if (!error.message?.includes('cpapi.spotify.com')) {
-          console.error('Error inicializando reproductor:', error);
-        }
-        initializingRef.current = false;
-      }
-    };
-
-    initializePlayer();
-
-    return () => {
-      if (playerRef.current) {
-        playerRef.current.disconnect();
-      }
-      window.onSpotifyWebPlaybackSDKReady = null;
-      initializingRef.current = false;
-    };
-  }, [token, initialVolume]);
-
-  const stopCurrentTrack = async () => {
-    if (!playerRef.current || !deviceId) return;
-
-    try {
-      await fetch(`https://api.spotify.com/v1/me/player/pause`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      const player = new window.Spotify.Player({
+        name: 'Web Playback SDK',
+        getOAuthToken: cb => { cb(token); },
+        volume: 0.5
       });
-      setIsPlaying(false);
-      stopProgressInterval();
-    } catch (error) {
-      console.error('Error deteniendo reproducción:', error);
-    }
-  };
 
-  const playNewTrack = async (trackUri) => {
-    if (!deviceId) return;
+      setPlayer(player);
+
+      player.addListener('ready', ({ device_id }) => {
+        console.log('Dispositivo listo:', device_id);
+        localStorage.setItem('spotify_device_id', device_id);
+        setIsReady(true);
+      });
+
+      player.addListener('not_ready', ({ device_id }) => {
+        console.log('Dispositivo no listo:', device_id);
+        setIsReady(false);
+      });
+
+      player.addListener('player_state_changed', (state) => {
+        if (!state) return;
+
+        setCurrentTrack(state.track_window.current_track);
+        setIsPlaying(!state.paused);
+        setProgress(state.position);
+        setDuration(state.duration);
+      });
+
+      player.connect();
+    };
+
+    return () => {
+      if (player) {
+        player.disconnect();
+      }
+      document.body.removeChild(script);
+    };
+  }, [token]);
+
+  // Actualizar el progreso cada segundo
+  useEffect(() => {
+    if (!isPlaying) return;
+
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= duration) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev + 1000;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isPlaying, duration]);
+
+  const playNewTrack = useCallback(async (uri) => {
+    if (!player || !isReady) return;
 
     try {
-      // Primero detener la reproducción actual
-      await stopCurrentTrack();
+      const device_id = localStorage.getItem('spotify_device_id');
+      if (!device_id) {
+        console.error('No se encontró ID del dispositivo');
+        return;
+      }
 
-      // Luego reproducir la nueva canción
-      await fetch(`https://api.spotify.com/v1/me/player/play`, {
+      await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
         method: 'PUT',
+        body: JSON.stringify({ uris: [uri] }),
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({
-          device_id: deviceId,
-          uris: [trackUri]
-        })
       });
 
       setIsPlaying(true);
-      startProgressInterval();
     } catch (error) {
-      console.error('Error reproduciendo nueva track:', error);
+      console.error('Error reproduciendo track:', error);
     }
-  };
+  }, [player, isReady, token]);
+
+  const togglePlay = useCallback(async () => {
+    if (!player) return;
+
+    try {
+      await player.togglePlay();
+      setIsPlaying(!isPlaying);
+    } catch (error) {
+      console.error('Error al toggle play:', error);
+    }
+  }, [player, isPlaying]);
+
+  const seekTo = useCallback(async (positionMs) => {
+    if (!player) return;
+
+    try {
+      await player.seek(positionMs);
+      setProgress(positionMs);
+    } catch (error) {
+      console.error('Error al buscar posición:', error);
+    }
+  }, [player]);
 
   return {
-    deviceId,
+    currentTrack,
     isPlaying,
     progress,
-    playerRef,
-    setIsPlaying,
-    setProgress,
-    playNewTrack,  // Exportamos la nueva función
-    stopCurrentTrack
+    duration,
+    playNewTrack,
+    togglePlay,
+    seekTo,
+    isReady
   };
 };
