@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useSpotify } from "./context/SpotifyContext";
-import { useSpotifySDK } from "./hooks/useSpotifySDK";
 import Navbar from "./components/layout/Navbar";
 import Header from "./components/layout/Header";
 import MainContent from "./components/layout/MainContent";
@@ -61,28 +60,27 @@ function App() {
       }`}>
         <Navbar />
         <Header />
-        <div className="flex-1 pb-24"> {/* Añadir padding bottom para el reproductor */}
+        <div className="flex-1 pb-24">
           <Routes>
             <Route path="/playlist/:playlistId" element={<PlaylistDetail />} />
             <Route path="*" element={<MainContent />} />
           </Routes>
         </div>
         <Footer />
+        {/* SpotifyPlayer solo en la vista principal */}
+        {token && location.pathname === '/' && <SpotifyPlayer className="fixed bottom-0 left-0" style={{ width: 'calc(75% - 1rem)' }} />}
       </div>
 
       {/* Sidebar fijo */}
       {token && (
         <aside 
-          className="w-1/4 bg-gray-950 border-l border-purple-900 fixed right-0 top-0 h-screen overflow-hidden pb-24"
+          className="w-1/4 bg-gray-950 border-l border-purple-900 fixed right-0 top-0 h-screen overflow-hidden pb-6"
         >
           <div className="h-full overflow-y-auto">
             <Dashboard sidebarMode={true} />
           </div>
         </aside>
       )}
-
-      {/* Reproductor fijo en la parte inferior */}
-      {token && <SpotifyPlayer className="fixed bottom-0 left-0 right-0" />}
     </div>
   );
 }

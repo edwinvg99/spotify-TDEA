@@ -22,7 +22,7 @@ const SpotifyPlayer = () => {
   if (!currentTrack || !isReady) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 p-4 z-[9999]">
+    <div className="fixed bottom-0 left-0 bg-gray-900/95 backdrop-blur-sm border-t border-gray-800 p-4 z-[9999] " style={{ width: 'calc(75% - 0rem)' }}>
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         {/* Información de la canción */}
         <div className="flex items-center gap-4 min-w-0 flex-1">
@@ -60,7 +60,7 @@ const SpotifyPlayer = () => {
 
           {/* Barra de progreso */}
           <div className="w-full flex items-center gap-2">
-            <span className="text-xs text-gray-400 w-10">
+            <span className="text-xs text-white w-10">
               {Math.floor(progress / 1000 / 60)}:
               {String(Math.floor((progress / 1000) % 60)).padStart(2, '0')}
             </span>
@@ -72,7 +72,7 @@ const SpotifyPlayer = () => {
               onChange={handleSeek}
               className="flex-1 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer"
             />
-            <span className="text-xs text-gray-400 w-10">
+            <span className="text-xs text-white w-10">
               {Math.floor(duration / 1000 / 60)}:
               {String(Math.floor((duration / 1000) % 60)).padStart(2, '0')}
             </span>

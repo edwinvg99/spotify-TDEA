@@ -1,67 +1,115 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 const events = [
   {
+    id: 1,
     title: "Sunset Beats Festival",
-    date: "2024-07-15",
-    image: "/assets/event1.png",
     description: "Un festival inolvidable en la playa con los mejores DJs internacionales.",
+    date: "2024-07-15",
+    location: "Playa del Sol",
+    image: "/assets/event1.png"
   },
   {
-    title: "Neon Night Club",
-    date: "2024-08-10",
-    image: "/assets/event2.png",
-    description: "Una noche llena de luces y música electrónica en el club más top.",
+    id: 2,
+    title: "Neon Night Party",
+    description: "Una noche de música electrónica en el mejor club de la ciudad.",
+    date: "2024-08-20",
+    location: "Club Neon",
+    image: "/assets/event2.png"
   },
   {
-    title: "Electro City Parade",
-    date: "2024-09-05",
-    image: "/assets/event3.png",
-    description: "Desfile urbano con sets en vivo y mucha energía.",
-  },
+    id: 3,
+    title: "Urban Beats Festival",
+    description: "Festival urbano con los mejores beats y DJs locales.",
+    date: "2024-09-10",
+    location: "Plaza Central",
+    image: "/assets/event3.png"
+  }
 ];
 
 const EventSlider = () => {
-  const [current, setCurrent] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const next = () => setCurrent((current + 1) % events.length);
-  const prev = () => setCurrent((current - 1 + events.length) % events.length);
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === events.length - 1 ? 0 : prevIndex + 1
+    );
+  };
 
-  const event = events[current];
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? events.length - 1 : prevIndex - 1
+    );
+  };
 
   return (
-    <section className="mb-8">
-      <h2 className="text-3xl font-bold text-white mb-6 text-center">Próximos Eventos</h2>
-      <div className="relative bg-gray-900 rounded-xl shadow-lg overflow-hidden h-96 flex items-center justify-center">
-        {/* Imagen de fondo con mayor oscurecimiento */}
-        <img
-          src={event.image}
-          alt={event.title}
-          className="absolute inset-0 w-full h-full object-cover brightness-30"
-        />
-        {/* Contenido centrado */}
-        <div className="relative z-10 text-center px-4">
-          <h3 className="text-4xl font-extrabold text-white drop-shadow-lg mb-3">
-            {event.title}
-          </h3>
-          <p className="text-lg text-gray-200 mb-2">{event.date}</p>
-          <p className="text-gray-300 max-w-2xl mx-auto">{event.description}</p>
+    <div className="relative w-full overflow-hidden rounded-xl shadow-2xl">
+      {/* Container principal */}
+      <div className="relative min-h-[200px] sm:min-h-[300px] md:min-h-[400px] lg:min-h-[500px]">
+        {/* Imágenes */}
+        {events.map((event, index) => (
+          <div
+            key={event.id}
+            className={`absolute w-full h-full transition-all duration-700 ease-in-out transform ${
+              index === currentIndex ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'
+            }`}
+          >
+            <img
+              src={event.image}
+              alt={event.title}
+              className="w-full h-full object-cover"
+            />
+            {/* Overlay con degradado */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+            
+            {/* Contenido del evento */}
+            <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 text-white">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">{event.title}</h3>
+              <p className="text-sm sm:text-base md:text-lg mb-2 text-gray-200">{event.description}</p>
+              <div className="flex flex-wrap gap-2 sm:gap-4 items-center">
+                <span className="bg-purple-600 px-3 py-1 rounded-full text-xs sm:text-sm">
+                  {event.date}
+                </span>
+                <span className="text-xs sm:text-sm text-gray-300">
+                  {event.location}
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {/* Botones de navegación */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 sm:p-3 rounded-r-lg transition-all duration-300"
+        >
+          <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 sm:p-3 rounded-l-lg transition-all duration-300"
+        >
+          <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Indicadores de posición */}
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+          {events.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                index === currentIndex ? 'bg-purple-600 scale-125' : 'bg-white/50 hover:bg-white/80'
+              }`}
+            />
+          ))}
         </div>
-        {/* Botones */}
-        <button
-          onClick={prev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-purple-700 hover:bg-purple-900 text-white rounded-full p-3 shadow-lg z-20"
-        >
-          &#8592;
-        </button>
-        <button
-          onClick={next}
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-purple-700 hover:bg-purple-900 text-white rounded-full p-3 shadow-lg z-20"
-        >
-          &#8594;
-        </button>
       </div>
-    </section>
+    </div>
   );
 };
 
