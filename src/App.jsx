@@ -8,6 +8,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Footer from "./components/layout/Footer";
 import PlaylistDetail from "./components/Playlists/PlaylistDetail";
 import SpotifyPlayer from "./components/Player/SpotifyPlayer";
+import MySpotify from "./components/spotify/MySpotify";
 
 function App() {
   const { token, exchangeCodeForToken, loading } = useSpotify();
@@ -63,6 +64,8 @@ function App() {
         <div className="flex-1 pb-24">
           <Routes>
             <Route path="/playlist/:playlistId" element={<PlaylistDetail />} />
+            <Route path="/my-spotify" element={<MySpotify />} />
+
             <Route path="*" element={<MainContent />} />
           </Routes>
         </div>

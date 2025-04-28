@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useSpotify } from "../../context/SpotifyContext";
 import ConnectButton from "../spotify/ConnectButton";
+import { Link } from 'react-router-dom';
+import { SPOTIFY_SCOPES } from '../../utils/spotifyScopes';
+
 
 const Navbar = () => {
   const { token, loading } = useSpotify();
@@ -13,30 +16,13 @@ const Navbar = () => {
     const state = crypto.randomUUID();
     sessionStorage.setItem('auth_state', state);
 
-    // Scopes necesarios
-    const scopes = [
-      'user-read-private',
-      'user-read-email',
-      'playlist-read-private',
-      'playlist-read-collaborative',
-      'playlist-modify-public',
-      'playlist-modify-private',
-      'user-library-read',
-      'user-top-read',
-      'streaming',
-      'app-remote-control',
-      'user-read-playback-state',
-      'user-modify-playback-state',
-      'user-read-currently-playing'
-    ].join(' ');
-
-    // Construir URL de autorización
+    
     const params = new URLSearchParams({
       client_id: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
       response_type: 'code',
       redirect_uri: import.meta.env.VITE_REDIRECT_URI,
       state: state,
-      scope: scopes,
+      scope: SPOTIFY_SCOPES,
       show_dialog: true
     });
 
@@ -66,9 +52,18 @@ const Navbar = () => {
 
         {/* Menú de escritorio */}
         <ul className="hidden lg:flex gap-8 text-white font-semibold">
-          <li><a href="#about" className="hover:text-purple-400 transition-colors">Sobre mí</a></li>
-          <li><a href="#events" className="hover:text-purple-400 transition-colors">Eventos</a></li>
-          <li><a href="#songs" className="hover:text-purple-400 transition-colors">Canciones</a></li>
+          <li>
+            <Link to="/" className="hover:text-purple-400 transition-colors">
+              Sobre mí
+            </Link>
+          </li>
+          {token && (
+            <li>
+              <Link to="/my-spotify" className="hover:text-green-400 transition-colors">
+                Mi Spotify
+              </Link>
+            </li>
+          )}
         </ul>
 
         <div className="hidden lg:block">
@@ -79,9 +74,28 @@ const Navbar = () => {
       {/* Menú móvil */}
       <div className={`lg:hidden ${isMenuOpen ? 'block' : 'hidden'} mt-4`}>
         <ul className="flex flex-col gap-4 text-white font-semibold">
-          <li><a href="#about" className="block py-2 hover:text-purple-400 transition-colors">Sobre mí</a></li>
-          <li><a href="#events" className="block py-2 hover:text-purple-400 transition-colors">Eventos</a></li>
-          <li><a href="#songs" className="block py-2 hover:text-purple-400 transition-colors">Canciones</a></li>
+          <li>
+            <Link to="/" className="block py-2 hover:text-purple-400 transition-colors">
+              Sobre mí
+            </Link>
+          </li>
+          <li>
+            <Link to="/#events" className="block py-2 hover:text-purple-400 transition-colors">
+              Eventos
+            </Link>
+          </li>
+          <li>
+            <Link to="/#songs" className="block py-2 hover:text-purple-400 transition-colors">
+              Canciones
+            </Link>
+          </li>
+          {token && (
+            <li>
+              <Link to="/my-spotify" className="block py-2 hover:text-purple-400 transition-colors">
+                Mi Spotify
+              </Link>
+            </li>
+          )}
           {!token && !loading && (
             <li className="py-2">
               <ConnectButton onClick={handleLogin} />

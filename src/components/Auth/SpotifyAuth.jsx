@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SPOTIFY_SCOPES } from '../../utils/spotifyScopes';
 
 const SpotifyAuth = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -22,20 +23,6 @@ const SpotifyAuth = () => {
       console.log('Generando nuevo estado:', state);
       sessionStorage.setItem('auth_state', state);
   
-      // Scope necesarios
-      const scopes = [
-        'user-read-private',
-        'user-read-email',
-        'playlist-read-private',
-        'playlist-modify-public',
-        'playlist-modify-private',
-        'user-top-read',
-        'streaming',
-        'app-remote-control',
-        'user-read-playback-state',
-        'user-modify-playback-state',
-        'user-read-currently-playing'
-      ].join(' ');
   
       // Construir y verificar parámetros de autorización
       const params = new URLSearchParams({
@@ -43,7 +30,7 @@ const SpotifyAuth = () => {
         response_type: 'code',
         redirect_uri: import.meta.env.VITE_REDIRECT_URI,
         state: state,
-        scope: scopes,
+        scope: SPOTIFY_SCOPES,
         show_dialog: true
       });
 

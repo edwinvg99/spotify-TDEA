@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { useSpotify } from '../../context/SpotifyContext'; // Asegúrate que la ruta sea correcta
+import { SPOTIFY_SCOPES } from '../../utils/spotifyScopes';
+
+// import { useSpotify } from '../../context/SpotifyContext';
 
 function Login() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -15,30 +17,7 @@ function Login() {
       const state = crypto.randomUUID();
       sessionStorage.setItem('auth_state', state);
 
-      // Scopes necesarios - añade o quita según las funcionalidades que necesites
-      const scopes = [
-        // Información básica del usuario
-        'user-read-private',
-        'user-read-email',
-        
-        // Acceso a playlists
-        'playlist-read-private',
-        'playlist-read-collaborative',
-        'playlist-modify-public',
-        'playlist-modify-private',
-        
-        // Biblioteca del usuario
-        'user-library-read',
-        'user-top-read',
-        
-        // Reproducción (necesarios para el Web Playback SDK)
-        'streaming',
-        'app-remote-control',
-        'user-read-playback-state',
-        'user-modify-playback-state',
-        'user-read-currently-playing'
-      ].join(' ');
-      
+
 
       // Construir URL de autorización
       const params = new URLSearchParams({
@@ -46,7 +25,7 @@ function Login() {
         response_type: 'code',
         redirect_uri: import.meta.env.VITE_REDIRECT_URI,
         state: state,
-        scope: scopes,
+        scope: SPOTIFY_SCOPES,
         show_dialog: true // Opcional: fuerza al usuario a aprobar cada vez
       });
 

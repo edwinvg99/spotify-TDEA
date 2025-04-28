@@ -11,6 +11,12 @@ const PlaylistGrid = ({ sidebarMode = false }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Filtrar playlists basado en el término de búsqueda
+  const filteredPlaylists = playlists.filter(playlist =>
+    playlist.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -106,9 +112,30 @@ const PlaylistGrid = ({ sidebarMode = false }) => {
 
     return (
       <div className="space-y-2 overflow-y-scroll no-scrollbar">
-        <h3 className="text-white font-semibold mb-3">Tus Playlists</h3>
+        <div className="flex items-center justify-between mb-3 mt-3">
+          <h3 className="text-white font-semibold">Tus Playlists</h3>
+          <div className="relative mr-4 mb-[-2px]">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Buscar playlist..."
+              className="bg-gray-700 text-white text-sm rounded-lg px-3 py-1 w-40 focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-gray-400"
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm('')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+        </div>
         <div className="space-y-2 max-h-[calc(100vh-300px)] overflow-y-scroll no-scrollbar">
-          {playlists.map(playlist => (
+          {filteredPlaylists.map(playlist => (
             <button
               key={playlist.id}
               onClick={() => handlePlaylistClick(playlist)}
@@ -129,6 +156,11 @@ const PlaylistGrid = ({ sidebarMode = false }) => {
               </div>
             </button>
           ))}
+          {filteredPlaylists.length === 0 && (
+            <p className="text-gray-400 text-sm text-center py-4">
+              No se encontraron playlists que coincidan con "{searchTerm}"
+            </p>
+          )}
         </div>
       </div>
     );
@@ -136,30 +168,61 @@ const PlaylistGrid = ({ sidebarMode = false }) => {
 
   // Vista normal (no sidebar)
   return (
-    <div className=" grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4  overflow-y-scroll no-scrollbar bg-red-500 ">
-      {playlists.map(playlist => (
-        <Link
-          key={playlist.id}
-          to={`/playlist/${playlist.id}`}
-          className="bg-gray-800 rounded-lg overflow-hidden hover:bg-gray-700 transition-all group overflow-y-scroll no-scrollbar"
-        >
-          <div className="aspect-square">
-            <img
-              src={playlist.images?.[0]?.url || '/default-playlist.png'}
-              alt={playlist.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="p-4">
-            <h3 className="text-white font-bold truncate group-hover:text-purple-400">
-              {playlist.name}
-            </h3>
-            <p className="text-gray-400 text-sm mt-1">
-              {playlist.tracks?.total || 0} canciones
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-white">Tus Playlists</h2>
+        <div className="relative">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Buscar playlist..."
+            className="bg-gray-700 text-white text-sm rounded-lg px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-gray-400"
+          />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 overflow-y-scroll no-scrollbar">
+        {filteredPlaylists.map(playlist => (
+          <Link
+            key={playlist.id}
+            to={`/playlist/${playlist.id}`}
+            className="bg-gray-800 rounded-lg overflow-hidden hover:bg-gray-700 transition-all group overflow-y-scroll no-scrollbar"
+          >
+            <div className="aspect-square">
+              <img
+                src={playlist.images?.[0]?.url || '/default-playlist.png'}
+                alt={playlist.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-4">
+              <h3 className="text-white font-bold truncate group-hover:text-purple-400">
+                {playlist.name}
+              </h3>
+              <p className="text-gray-400 text-sm mt-1">
+                {playlist.tracks?.total || 0} canciones
+              </p>
+            </div>
+          </Link>
+        ))}
+        {filteredPlaylists.length === 0 && (
+          <div className="col-span-full text-center py-8">
+            <p className="text-gray-400">
+              No se encontraron playlists que coincidan con "{searchTerm}"
             </p>
           </div>
-        </Link>
-      ))}
+        )}
+      </div>
     </div>
   );
 };
