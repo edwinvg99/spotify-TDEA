@@ -1,8 +1,8 @@
 const AboutSection = () => {
   return (
-    <section className="relative py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8">
+    <section className="relative py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8  rounded-2xl">
       {/* Fondo con gradiente */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-black to-black"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 via-black to-black rounded-2xl"></div>
       
       {/* Contenedor principal */}
       <div className="relative max-w-7xl mx-auto">
@@ -17,7 +17,7 @@ const AboutSection = () => {
           </div>
 
           {/* Contenido de texto */}
-          <div className="space-y-6 md:space-y-8">
+          <div className="space-y-6 md:space-y-8 ">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
               Tu DJ Favorito
             </h2>
