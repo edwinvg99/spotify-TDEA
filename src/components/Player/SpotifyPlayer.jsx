@@ -1,4 +1,6 @@
-import { useEffect } from 'react';
+//edwin
+
+import { useEffect, useState } from 'react';
 import { useSpotifySDK } from '../../hooks/useSpotifySDK';
 import { useSpotify } from '../../context/SpotifyContext';
 
@@ -8,21 +10,56 @@ const SpotifyPlayer = () => {
     currentTrack, 
     isPlaying, 
     togglePlay, 
-    progress, 
+    progress: sdkProgress, 
     duration,
     seekTo,
     isReady
   } = useSpotifySDK(token);
 
+  // Añadir estado local para el progreso
+  const [progress, setProgress] = useState(0);
+
+  // Actualizar el progreso cuando cambie en el SDK
+  useEffect(() => {
+    setProgress(sdkProgress);
+  }, [sdkProgress]);
+
+  // Actualizar el progreso cada segundo mientras se reproduce
+  useEffect(() => {
+    let intervalId;
+
+    if (isPlaying && isReady) {
+      intervalId = setInterval(() => {
+        setProgress(prev => {
+          if (prev >= duration) {
+            clearInterval(intervalId);
+            return 0;
+          }
+          return prev + 1000;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isPlaying, isReady, duration]);
+
   const handleSeek = (e) => {
     const position = parseInt(e.target.value);
+    setProgress(position); // Actualizar el progreso local inmediatamente
     seekTo(position);
   };
 
   if (!currentTrack || !isReady) return null;
 
+  // Calcular el porcentaje de progreso
+  const progressPercentage = (progress / duration) * 100;
+
   return (
-    <div className="fixed bottom-0 left-0 bg-gray-900/95 backdrop-blur-sm border-t border-gray-800 p-4 z-[9999] " style={{ width: 'calc(75% - 0rem)' }}>
+    <div className="fixed bottom-0 left-0 bg-gray-900/95 backdrop-blur-sm border-t border-gray-800 p-4 z-[9999]" style={{ width: 'calc(75% - 0rem)' }}>
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         {/* Información de la canción */}
         <div className="flex items-center gap-4 min-w-0 flex-1">
@@ -71,6 +108,9 @@ const SpotifyPlayer = () => {
               value={progress}
               onChange={handleSeek}
               className="flex-1 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer"
+              style={{
+                background: `linear-gradient(to right, #4caf50 ${progressPercentage}%, #ddd ${progressPercentage}%)`
+              }}
             />
             <span className="text-xs text-white w-10">
               {Math.floor(duration / 1000 / 60)}:

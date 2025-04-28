@@ -27,7 +27,7 @@ const UserSearch = ({ sidebarMode = false }) => {
           />
           <button
             type="submit"
-            className="w-full px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-medium"
+            className="w-full px-3 py-2 bg-green-700 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-medium font-bold " 
           >
             Buscar en Spotify
           </button>

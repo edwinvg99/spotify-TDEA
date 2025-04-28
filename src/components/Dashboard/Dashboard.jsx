@@ -1,8 +1,8 @@
 // src/components/Dashboard.jsx
-import { useState, useEffect } from 'react';
-import { useSpotify } from '../../context/SpotifyContext';
-import PlaylistGrid from '../Playlists/PlaylistGrid';
-import UserSearch from './UserSearch';
+import { useState, useEffect } from "react";
+import { useSpotify } from "../../context/SpotifyContext";
+import PlaylistGrid from "../Playlists/PlaylistGrid";
+import UserSearch from "./UserSearch";
 
 const Dashboard = ({ sidebarMode }) => {
   const [profile, setProfile] = useState(null);
@@ -18,18 +18,18 @@ const Dashboard = ({ sidebarMode }) => {
       }
 
       try {
-        const response = await fetch('https://api.spotify.com/v1/me', {
-          headers: { 'Authorization': `Bearer ${token}` }
+        const response = await fetch("https://api.spotify.com/v1/me", {
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         if (!response.ok) {
-          throw new Error('Error al cargar el perfil');
+          throw new Error("Error al cargar el perfil");
         }
 
         const data = await response.json();
         setProfile(data);
       } catch (error) {
-        console.error('Error cargando perfil:', error);
+        console.error("Error cargando perfil:", error);
         setError(error.message);
       } finally {
         setIsLoading(false);
@@ -54,11 +54,7 @@ const Dashboard = ({ sidebarMode }) => {
   }
 
   if (error) {
-    return (
-      <div className="p-4 text-red-500 text-center">
-        {error}
-      </div>
-    );
+    return <div className="p-4 text-red-500 text-center">{error}</div>;
   }
 
   if (!profile) return null;
@@ -66,39 +62,40 @@ const Dashboard = ({ sidebarMode }) => {
   if (sidebarMode) {
     return (
       <div className="h-full flex flex-col overflow-y-scroll no-scrollbar">
-        
-        
         <div className="px-4 pb-4 border-b border-gray-600">
-  {/* Contenedor principal */}
-  <div className="flex items-center justify-between gap-4 pt-4">
-    {/* Subcontenedor imagen + datos */}
-    <div className="flex items-center gap-4">
-      {/* Imagen de perfil */}
-      {profile.images?.[0]?.url && (
-        <img 
-          src={profile.images[0].url} 
-          alt="Foto de perfil" 
-          className="rounded-full w-14 h-14 object-cover shadow-md border-2 border-purple-600"
-        />
-      )}
+          {/* Contenedor principal */}
+          <div className="flex items-center justify-between gap-4 pt-4">
+            {/* Subcontenedor imagen + datos */}
+            <div className="flex items-center gap-4">
+              {/* Imagen de perfil */}
+              {profile.images?.[0]?.url && (
+                <img
+                  src={profile.images[0].url}
+                  alt="Foto de perfil"
+                  className="rounded-full w-14 h-14 object-cover shadow-md border-2 border-purple-600"
+                />
+              )}
 
-      {/* Datos del perfil */}
-      <div className="flex flex-col">
-        <p className="text-base font-semibold text-white leading-tight">{profile.display_name}</p>
-        <p className="text-sm text-gray-400 leading-tight">{profile.email}</p>
-      </div>
-    </div>
+              {/* Datos del perfil */}
+              <div className="flex flex-col">
+                <p className="text-base font-semibold text-white leading-tight">
+                  {profile.display_name}
+                </p>
+                <p className="text-sm text-gray-400 leading-tight">
+                  {profile.email}
+                </p>
+              </div>
+            </div>
 
-    {/* Botón de salir */}
-    <button
-      onClick={logout}
-      className="bg-red-600 hover:bg-red-700 text-white text-xs py-1 px-3 rounded-full shadow transition-colors"
-    >
-      Salir
-    </button>
-  </div>
-</div>
-
+            {/* Botón de salir */}
+            <button
+              onClick={logout}
+              className="bg-white hover:bg-red-700 hover:text-white text-purple text-xs py-1 px-3 rounded-full shadow transition-colors"
+            >
+              Salir
+            </button>
+          </div>
+        </div>
 
         {/* Playlists en el medio (no scroll) */}
         <div className="flex-1 overflow-y-scroll no-scrollbar">
@@ -124,14 +121,16 @@ const Dashboard = ({ sidebarMode }) => {
         <h2 className="text-2xl font-bold text-white mb-4">Tu Perfil</h2>
         <div className="flex items-start gap-6">
           {profile.images?.[0]?.url && (
-            <img 
-              src={profile.images[0].url} 
-              alt="Foto de perfil" 
-              className="rounded-full w-24 h-24 object-cover shadow-lg" 
+            <img
+              src={profile.images[0].url}
+              alt="Foto de perfil"
+              className="rounded-full w-24 h-24 object-cover shadow-lg"
             />
           )}
           <div>
-            <p className="text-2xl font-bold text-white">{profile.display_name}</p>
+            <p className="text-2xl font-bold text-white">
+              {profile.display_name}
+            </p>
             <p className="text-gray-400">{profile.email}</p>
             {profile.country && (
               <p className="text-gray-400">País: {profile.country}</p>

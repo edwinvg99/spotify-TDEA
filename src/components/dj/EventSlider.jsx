@@ -51,8 +51,9 @@ const EventSlider = () => {
           <div
             key={event.id}
             className={`absolute w-full h-full transition-all duration-700 ease-in-out transform ${
-              index === currentIndex ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'
+              index === currentIndex ? 'opacity-100 translate-x-0' : 'opacity-0 '
             }`}
+        
           >
             <img
               src={event.image}
