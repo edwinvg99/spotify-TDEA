@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useSpotify } from "../../context/SpotifyContext";
 import PlaylistGrid from "../Playlists/PlaylistGrid";
-import UserSearch from "./UserSearch";
+import SpotifyPlayer from "../Player/SpotifyPlayer";
 
 const Dashboard = ({ sidebarMode }) => {
   const [profile, setProfile] = useState(null);
@@ -62,29 +62,27 @@ const Dashboard = ({ sidebarMode }) => {
   if (sidebarMode) {
     return (
       <div className="h-full flex flex-col overflow-y-scroll no-scrollbar">
+        {/* Perfil */}
         <div className="px-4 pb-4 border-b border-gray-600">
-          {/* Contenedor principal */}
+          {/* Subcontenedor imagen + datos */}
           <div className="flex items-center justify-between gap-4 pt-4">
-            {/* Subcontenedor imagen + datos */}
-            <div className="flex items-center gap-4">
-              {/* Imagen de perfil */}
-              {profile.images?.[0]?.url && (
-                <img
-                  src={profile.images[0].url}
-                  alt="Foto de perfil"
-                  className="rounded-full w-14 h-14 object-cover shadow-md border-2 border-purple-600"
-                />
-              )}
+            {/* Imagen de perfil */}
+            {profile.images?.[0]?.url && (
+              <img
+                src={profile.images[0].url}
+                alt="Foto de perfil"
+                className="rounded-full w-14 h-14 object-cover shadow-md border-2 border-purple-600"
+              />
+            )}
 
-              {/* Datos del perfil */}
-              <div className="flex flex-col">
-                <p className="text-base font-semibold text-white leading-tight">
-                  {profile.display_name}
-                </p>
-                <p className="text-sm text-gray-400 leading-tight">
-                  {profile.email}
-                </p>
-              </div>
+            {/* Datos del perfil */}
+            <div className="flex flex-col">
+              <p className="text-base font-semibold text-white leading-tight">
+                {profile.display_name}
+              </p>
+              <p className="text-sm text-gray-400 leading-tight">
+                {profile.email}
+              </p>
             </div>
 
             {/* Botón de salir */}
@@ -97,17 +95,17 @@ const Dashboard = ({ sidebarMode }) => {
           </div>
         </div>
 
-        {/* Playlists en el medio (no scroll) */}
+        {/* Playlists */}
         <div className="flex-1 overflow-y-scroll no-scrollbar">
           <div className="p-4">
             <PlaylistGrid sidebarMode={true} />
           </div>
         </div>
 
-        {/* Búsqueda de usuarios en la parte inferior */}
+        {/* SpotifyPlayer en el sidebar */}
         <div className="mt-auto border-t border-gray-800">
           <div className="p-4">
-            <UserSearch sidebarMode={true} />
+            <SpotifyPlayer sidebarMode={true} />
           </div>
         </div>
       </div>
@@ -116,7 +114,7 @@ const Dashboard = ({ sidebarMode }) => {
 
   // Vista completa (no sidebar)
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 pb-24"> {/* Añadimos padding bottom para el player */}
       <div className="bg-gray-800 rounded-lg p-6">
         <h2 className="text-2xl font-bold text-white mb-4">Tu Perfil</h2>
         <div className="flex items-start gap-6">
@@ -142,11 +140,6 @@ const Dashboard = ({ sidebarMode }) => {
       <div className="bg-gray-800 rounded-lg p-6">
         <h2 className="text-2xl font-bold text-white mb-4">Tus Playlists</h2>
         <PlaylistGrid />
-      </div>
-
-      <div className="bg-gray-800 rounded-lg p-6">
-        <h2 className="text-2xl font-bold text-white mb-4">Buscar Usuarios</h2>
-        <UserSearch />
       </div>
     </div>
   );

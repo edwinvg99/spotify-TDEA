@@ -7,7 +7,6 @@ import MainContent from "./components/layout/MainContent";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Footer from "./components/layout/Footer";
 import PlaylistDetail from "./components/Playlists/PlaylistDetail";
-import SpotifyPlayer from "./components/Player/SpotifyPlayer";
 import MySpotify from "./components/spotify/MySpotify";
 
 function App() {
@@ -65,13 +64,11 @@ function App() {
           <Routes>
             <Route path="/playlist/:playlistId" element={<PlaylistDetail />} />
             <Route path="/my-spotify" element={<MySpotify />} />
-
             <Route path="*" element={<MainContent />} />
           </Routes>
         </div>
         <Footer />
-        {/* SpotifyPlayer solo en la vista principal */}
-        {token && location.pathname === '/' && <SpotifyPlayer className="fixed bottom-0 left-0" style={{ width: 'calc(75% - 1rem)' }} />}
+        {/* Eliminamos el SpotifyPlayer de aquí */}
       </div>
 
       {/* Sidebar fijo */}

@@ -8,14 +8,12 @@ export const useSpotifySDK = (token) => {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  // Inicializar el SDK de Spotify
   useEffect(() => {
     if (!token) return;
 
     const script = document.createElement('script');
     script.src = 'https://sdk.scdn.co/spotify-player.js';
     script.async = true;
-
     document.body.appendChild(script);
 
     window.onSpotifyWebPlaybackSDKReady = () => {
@@ -51,14 +49,11 @@ export const useSpotifySDK = (token) => {
     };
 
     return () => {
-      if (player) {
-        player.disconnect();
-      }
+      if (player) player.disconnect();
       document.body.removeChild(script);
     };
   }, [token]);
 
-  // Actualizar el progreso cada segundo
   useEffect(() => {
     if (!isPlaying) return;
 

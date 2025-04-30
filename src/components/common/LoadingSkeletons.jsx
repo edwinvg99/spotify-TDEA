@@ -40,3 +40,45 @@ export const PlayerSkeleton = () => (
     </div>
   </div>
 );
+
+export const TracksSkeleton = () => (
+  <div className="animate-pulse space-y-4">
+    {/* Header de columnas */}
+    <div className="grid grid-cols-[auto_1fr_1fr_auto] gap-3 px-4 py-2 border-b border-gray-800">
+      <div className="w-10 h-4 bg-gray-700 rounded"></div>
+      <div className="h-4 bg-gray-700 rounded w-20"></div>
+      <div className="h-4 bg-gray-700 rounded w-24"></div>
+      <div className="h-4 bg-gray-700 rounded w-16"></div>
+    </div>
+
+    {/* Tracks */}
+    {[...Array(10)].map((_, i) => (
+      <div 
+        key={i} 
+        className="grid grid-cols-[auto_1fr_1fr_auto] gap-3 px-4 py-2"
+      >
+        {/* Número e imagen */}
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-4 bg-gray-700 rounded"></div>
+          <div className="w-10 h-10 bg-gray-700 rounded"></div>
+        </div>
+
+        {/* Título y artista */}
+        <div className="space-y-2">
+          <div className="h-4 bg-gray-700 rounded w-3/4"></div>
+          <div className="h-3 bg-gray-700 rounded w-1/2"></div>
+        </div>
+
+        {/* Álbum */}
+        <div className="flex items-center">
+          <div className="h-4 bg-gray-700 rounded w-2/3"></div>
+        </div>
+
+        {/* Duración */}
+        <div className="flex items-center">
+          <div className="h-4 bg-gray-700 rounded w-12"></div>
+        </div>
+      </div>
+    ))}
+  </div>
+);

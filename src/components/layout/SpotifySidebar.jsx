@@ -8,14 +8,18 @@ const SpotifySidebar = () => (
     <div>
       <Dashboard sidebarMode={true} />
     </div>
+    
+        {/* Playlists del usuario */}
+        <div>
+      <PlaylistGrid sidebarMode={true} />
+    </div>
+    
+    
     {/* Reproductor de Spotify */}
     <div>
       <SpotifyPlayer />
     </div>
-    {/* Playlists del usuario */}
-    <div>
-      <PlaylistGrid sidebarMode={true} />
-    </div>
+
   </aside>
 );
 
