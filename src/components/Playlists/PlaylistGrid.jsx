@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSpotify } from '../../context/SpotifyContext';
 import PlaylistDetail from './PlaylistDetail';
-
+import VisibilityBadge from '../common/VisibilityBadge';
 
 const PlaylistGrid = ({ sidebarMode = false }) => {
   const { token } = useSpotify();
@@ -26,16 +26,29 @@ const PlaylistGrid = ({ sidebarMode = false }) => {
       }
 
       try {
-        const response = await fetch('https://api.spotify.com/v1/me/playlists', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        let allPlaylists = [];
+        let url = 'https://api.spotify.com/v1/me/playlists?limit=50';
 
-        if (!response.ok) {
-          throw new Error('Error al cargar las playlists');
+        // Hacer múltiples peticiones si hay más de 50 playlists
+        while (url) {
+          const response = await fetch(url, {
+            headers: { 
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error('Error al cargar las playlists');
+          }
+
+          const data = await response.json();
+          allPlaylists = [...allPlaylists, ...data.items];
+          url = data.next; // URL para la siguiente página de resultados
         }
 
-        const data = await response.json();
-        setPlaylists(data.items || []);
+        console.log('Playlists encontradas:', allPlaylists);
+        setPlaylists(allPlaylists);
       } catch (error) {
         console.error('Error cargando playlists:', error);
         setError(error.message);
@@ -146,12 +159,19 @@ const PlaylistGrid = ({ sidebarMode = false }) => {
                 alt={playlist.name}
                 className="w-12 h-12 rounded object-cover"
               />
-              <div className="overflow-hidden overflow-y-scroll no-scrollbar">
-                <p className="text-white text-sm font-medium truncate group-hover:text-purple-400">
-                  {playlist.name}
-                </p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="text-white text-sm font-medium truncate group-hover:text-purple-400">
+                    {playlist.name}
+                  </p>
+                  <VisibilityBadge 
+                    isPublic={playlist.public}
+                    isCollaborative={playlist.collaborative}
+                    size="small" 
+                  />
+                </div>
                 <p className="text-gray-400 text-xs truncate">
-                  {playlist.tracks?.total || 0} canciones
+                  {playlist.tracks?.total || 0} canciones • {playlist.owner.display_name}
                 </p>
               </div>
             </button>
@@ -196,16 +216,22 @@ const PlaylistGrid = ({ sidebarMode = false }) => {
           <Link
             key={playlist.id}
             to={`/playlist/${playlist.id}`}
-            className="bg-gray-800 rounded-lg overflow-hidden hover:bg-gray-700 transition-all group overflow-y-scroll no-scrollbar"
+            className="bg-gray-800 rounded-lg overflow-hidden hover:bg-gray-700 transition-all group p-4"
           >
-            <div className="aspect-square">
+            <div className="aspect-square relative">
               <img
                 src={playlist.images?.[0]?.url || '/default-playlist.png'}
                 alt={playlist.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-lg"
               />
+              <div className="absolute top-2 right-2">
+                <VisibilityBadge 
+                  isPublic={playlist.public}
+                  isCollaborative={playlist.collaborative}
+                />
+              </div>
             </div>
-            <div className="p-4">
+            <div className="mt-2">
               <h3 className="text-white font-bold truncate group-hover:text-purple-400">
                 {playlist.name}
               </h3>

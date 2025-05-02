@@ -119,6 +119,7 @@ const SpotifyPlayer = ({ sidebarMode = false, standalone = true }) => {
       )}
     </button>
   );
+  
 
   const ProgressBar = () => (
     <div className="w-full flex items-center gap-2">
