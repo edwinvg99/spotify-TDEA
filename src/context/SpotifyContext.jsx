@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SpotifyContext = createContext();
 
@@ -6,6 +7,8 @@ export const SpotifyProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('spotify_token'));
   const [loading, setLoading] = useState(false);
   const [contextError, setContextError] = useState(null);
+
+  const navigate = useNavigate();
 
   const exchangeCodeForToken = useCallback(async (code) => {
     if (!code) return null;
@@ -68,13 +71,30 @@ export const SpotifyProvider = ({ children }) => {
     }
   }, []);
 
-  const logout = useCallback(() => {
-    setToken(null);
-    setContextError(null);
-    localStorage.removeItem('spotify_token');
-    localStorage.removeItem('spotify_refresh_token');
-    sessionStorage.removeItem('auth_state');
-  }, []);
+  const logout = useCallback(async () => {
+    try {
+      // Intentar pausar la reproducción antes de cerrar sesión
+      const player = window.Spotify?.Player;
+      if (player) {
+        await fetch('https://api.spotify.com/v1/me/player/pause', {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error al pausar la reproducción:', error);
+    } finally {
+      // Limpiar todo el estado y storage
+      setToken(null);
+      setContextError(null);
+      localStorage.removeItem('spotify_token');
+      localStorage.removeItem('spotify_refresh_token');
+      sessionStorage.removeItem('auth_state');
+    }
+  }, [token]);
 
   // Validar token inicial
   useEffect(() => {

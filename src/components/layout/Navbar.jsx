@@ -58,11 +58,14 @@ const Navbar = () => {
             </Link>
           </li>
           {token && (
-            <li>
-              <Link to="/my-spotify" className="hover:text-green-400 transition-colors">
-                Mi Spotify
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/my-spotify" className="hover:text-green-400 transition-colors">
+                  Mi Spotify
+                </Link>
+              </li>
+
+            </>
           )}
         </ul>
 
@@ -79,22 +82,21 @@ const Navbar = () => {
               Sobre mí
             </Link>
           </li>
-          <li>
-            <Link to="/#events" className="block py-2 hover:text-purple-400 transition-colors">
-              Eventos
-            </Link>
-          </li>
-          <li>
-            <Link to="/#songs" className="block py-2 hover:text-purple-400 transition-colors">
-              Canciones
-            </Link>
-          </li>
+
+
           {token && (
-            <li>
-              <Link to="/my-spotify" className="block py-2 hover:text-purple-400 transition-colors">
-                Mi Spotify
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/my-spotify" className="block py-2 hover:text-purple-400 transition-colors">
+                  Mi Spotify
+                </Link>
+              </li>
+              <li>
+                <Link to="/Mysounds" className="block py-2 hover:text-purple-400 transition-colors">
+                  Mi musica
+                </Link>
+              </li>
+            </>
           )}
           {!token && !loading && (
             <li className="py-2">

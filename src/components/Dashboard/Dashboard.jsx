@@ -1,8 +1,10 @@
 // src/components/Dashboard.jsx
 import { useState, useEffect } from "react";
 import { useSpotify } from "../../context/SpotifyContext";
-import PlaylistGrid from "../Playlists/PlaylistGrid";
+import PlaylistGrid from "../Playlists/PlaylistGrid/PlaylistGrid";
 import SpotifyPlayer from "../Player/SpotifyPlayer";
+import ProfileSection from "./components/ProfileSection";
+import LoadingState from "./components/LoadingState";
 
 const Dashboard = ({ sidebarMode }) => {
   const [profile, setProfile] = useState(null);
@@ -22,9 +24,7 @@ const Dashboard = ({ sidebarMode }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (!response.ok) {
-          throw new Error("Error al cargar el perfil");
-        }
+        if (!response.ok) throw new Error("Error al cargar el perfil");
 
         const data = await response.json();
         setProfile(data);
@@ -39,70 +39,21 @@ const Dashboard = ({ sidebarMode }) => {
     loadProfile();
   }, [token]);
 
-  if (isLoading) {
-    return (
-      <div className="p-4">
-        <div className="animate-pulse flex flex-col items-center gap-4">
-          <div className="w-14 h-14 bg-gray-700 rounded-full"></div>
-          <div className="space-y-3 w-full">
-            <div className="h-4 bg-gray-700 rounded"></div>
-            <div className="h-3 bg-gray-700 rounded w-3/4"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return <div className="p-4 text-red-500 text-center">{error}</div>;
-  }
-
+  if (isLoading) return <LoadingState />;
+  if (error) return <div className="p-4 text-red-500 text-center">{error}</div>;
   if (!profile) return null;
 
   if (sidebarMode) {
     return (
       <div className="h-full flex flex-col overflow-y-scroll no-scrollbar">
-        {/* Perfil */}
-        <div className="px-4 pb-4 border-b border-gray-600">
-          {/* Subcontenedor imagen + datos */}
-          <div className="flex items-center justify-between gap-4 pt-4">
-            {/* Imagen de perfil */}
-            {profile.images?.[0]?.url && (
-              <img
-                src={profile.images[0].url}
-                alt="Foto de perfil"
-                className="rounded-full w-14 h-14 object-cover shadow-md border-2 border-purple-600"
-              />
-            )}
-
-            {/* Datos del perfil */}
-            <div className="flex flex-col">
-              <p className="text-base font-semibold text-white leading-tight">
-                {profile.display_name}
-              </p>
-              <p className="text-sm text-gray-400 leading-tight">
-                {profile.email}
-              </p>
-            </div>
-
-            {/* Botón de salir */}
-            <button
-              onClick={logout}
-              className="bg-white hover:bg-red-700 hover:text-white text-purple text-xs py-1 px-3 rounded-full shadow transition-colors"
-            >
-              Salir
-            </button>
-          </div>
-        </div>
-
-        {/* Playlists */}
+        <ProfileSection profile={profile} logout={logout} sidebarMode={true} />
+        
         <div className="flex-1 overflow-y-scroll no-scrollbar">
           <div className="p-4">
             <PlaylistGrid sidebarMode={true} />
           </div>
         </div>
 
-        {/* SpotifyPlayer en el sidebar */}
         <div className="mt-auto border-t border-gray-800">
           <div className="p-4">
             <SpotifyPlayer sidebarMode={true} />
@@ -112,34 +63,17 @@ const Dashboard = ({ sidebarMode }) => {
     );
   }
 
-  // Vista completa (no sidebar)
   return (
-    <div className="p-6 space-y-6 pb-24"> {/* Añadimos padding bottom para el player */}
-      <div className="bg-gray-800 rounded-lg p-6">
-        <h2 className="text-2xl font-bold text-white mb-4">Tu Perfil</h2>
-        <div className="flex items-start gap-6">
-          {profile.images?.[0]?.url && (
-            <img
-              src={profile.images[0].url}
-              alt="Foto de perfil"
-              className="rounded-full w-24 h-24 object-cover shadow-lg"
-            />
-          )}
-          <div>
-            <p className="text-2xl font-bold text-white">
-              {profile.display_name}
-            </p>
-            <p className="text-gray-400">{profile.email}</p>
-            {profile.country && (
-              <p className="text-gray-400">País: {profile.country}</p>
-            )}
-          </div>
+    <div className=" space-y-4  bg-slate-900 w-full h-full">
+      <ProfileSection profile={profile} logout={logout} sidebarMode={false} />
+      
+      <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 sm:p-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-white mb-4">
+          Tus Playlists
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <PlaylistGrid />
         </div>
-      </div>
-
-      <div className="bg-gray-800 rounded-lg p-6">
-        <h2 className="text-2xl font-bold text-white mb-4">Tus Playlists</h2>
-        <PlaylistGrid />
       </div>
     </div>
   );

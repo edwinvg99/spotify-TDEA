@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSpotify } from '../../context/SpotifyContext';
-import UserSearch from '../Dashboard/UserSearch';
+import UserSearch from './UserSearch';
 
 const StatCard = ({ title, value, icon }) => (
   <div className="bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-colors">

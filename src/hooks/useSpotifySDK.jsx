@@ -54,11 +54,6 @@ export const useSpotifySDK = (token) => {
     };
   }, [token]);
   
-//   console.log('player', player);
-// console.log('isReady', isReady);
-// console.log('isPlaying', isPlaying);
-
-  
 
   useEffect(() => {
     if (!isPlaying) return; // No actualices el progreso si está pausada
@@ -116,11 +111,6 @@ export const useSpotifySDK = (token) => {
     });
   };
   
-  
-  
-  
-  
-  
 
   const seekTo = useCallback(async (positionMs) => {
     if (!player) return;
@@ -168,9 +158,5 @@ export const useSpotifySDK = (token) => {
     isReady,
     nextTrack,    
     previousTrack  
-    
-    
-    
-    
   };
 };

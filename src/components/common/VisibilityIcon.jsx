@@ -1,4 +1,4 @@
-const VisibilityBadge = ({ isPublic, isCollaborative, size = 'normal' }) => {
+const VisibilityIcon = ({ isPublic, isCollaborative, size = 'normal' }) => {
   let status = isCollaborative ? 'collaborative' : isPublic ? 'public' : 'private';
   
   const getStatusConfig = (status) => {
@@ -52,4 +52,4 @@ const VisibilityBadge = ({ isPublic, isCollaborative, size = 'normal' }) => {
   );
 };
 
-export default VisibilityBadge;
+export default VisibilityIcon;
