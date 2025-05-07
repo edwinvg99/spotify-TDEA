@@ -12,6 +12,7 @@ const SearchBar = ({ searchTerm, setSearchTerm, isSidebar }) => {
           ${isSidebar ? 'px-3 py-1 w-40' : 'px-4 py-2 w-64'}
         `}
       />
+      
       {searchTerm && (
         <button
           onClick={() => setSearchTerm('')}

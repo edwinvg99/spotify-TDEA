@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { SPOTIFY_SCOPES } from '../../utils/spotifyScopes';
+import ConnectButton from './ConnectButton';
 
 const SpotifyAuth = () => {
+  // controlar el proceso de autenticación
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Limpiar estados anteriores al montar el componente
@@ -13,6 +13,8 @@ const SpotifyAuth = () => {
   }, []);
 
   const handleLogin = async () => {
+    // Evitar múltiples intentos de autenticación simultáneos
+
     if (isAuthenticating) return;
     
     try {
@@ -20,10 +22,8 @@ const SpotifyAuth = () => {
       
       // Generar estado seguro y guardarlo
       const state = crypto.randomUUID();
-      console.log('Generando nuevo estado:', state);
       sessionStorage.setItem('auth_state', state);
-  
-  
+      
       // Construir y verificar parámetros de autorización
       const params = new URLSearchParams({
         client_id: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
@@ -33,13 +33,13 @@ const SpotifyAuth = () => {
         scope: SPOTIFY_SCOPES,
         show_dialog: true
       });
-
-      // Verificar que los parámetros requeridos estén presentes
+      
+      // Verifica que las credenciales necesarias estén disponibles
       if (!params.get('client_id') || !params.get('redirect_uri')) {
         throw new Error('Faltan credenciales de Spotify en las variables de entorno');
       }
-  
-      console.log('Iniciando autorización con estado:', state);
+      
+      // Construye la URL de autorización y redirige al usuario
       const authUrl = `https://accounts.spotify.com/authorize?${params}`;
       window.location.href = authUrl;
       
@@ -51,19 +51,10 @@ const SpotifyAuth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <button
-        onClick={handleLogin}
-        disabled={isAuthenticating}
-        className={`
-          bg-green-500 hover:bg-green-600 text-white font-bold 
-          py-4 px-6 rounded-full transition-colors
-          ${isAuthenticating ? 'opacity-50 cursor-not-allowed' : ''}
-        `}
-      >
-        {isAuthenticating ? 'Conectando...' : 'Conectar con Spotify'}
-      </button>
-    </div>
+    <ConnectButton 
+      onClick={handleLogin}
+      isAuthenticating={isAuthenticating}
+    />
   );
 };
 

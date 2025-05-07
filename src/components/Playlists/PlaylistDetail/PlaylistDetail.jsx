@@ -73,7 +73,7 @@ const PlaylistDetail = ({ playlistId, isInSidebar = false }) => {
 
   return (
     <div className={`${containerClass} h-full flex flex-col overflow-y-scroll no-scrollbar`}>
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 ">
         <PlaylistHeader playlist={playlist} isInSidebar={isInSidebar} />
         <PlaylistStats playlist={playlist} />
 

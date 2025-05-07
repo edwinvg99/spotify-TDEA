@@ -14,27 +14,6 @@ const UserSearch = ({ sidebarMode = false }) => {
     window.open(spotifySearchUrl, '_blank');
   };
 
-  // if (sidebarMode) {
-  //   return (
-  //     <div className="w-full">
-  //       <form onSubmit={handleSearch} className="flex flex-col gap-2">
-  //         <input
-  //           type="text"
-  //           value={searchQuery}
-  //           onChange={(e) => setSearchQuery(e.target.value)}
-  //           placeholder="Buscar usuarios..."
-  //           className="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:border-purple-500 text-sm"
-  //         />
-  //         <button
-  //           type="submit"
-  //           className="w-full px-3 py-2 bg-green-700 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-medium font-bold " 
-  //         >
-  //           Buscar en Spotify
-  //         </button>
-  //       </form>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="bg-gray-800 p-4 rounded-lg">
@@ -54,7 +33,7 @@ const UserSearch = ({ sidebarMode = false }) => {
           Buscar
         </button>
       </form>
-      <p className="text-gray-400 text-sm mt-2">
+      <p className="text-gray-600 text-sm mt-2 ml-2">
         Se abrirá Spotify para buscar y seguir usuarios
       </p>
     </div>

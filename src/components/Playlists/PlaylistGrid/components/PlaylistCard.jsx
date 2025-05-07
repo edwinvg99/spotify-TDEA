@@ -13,8 +13,8 @@ const PlaylistCard = ({ playlist, isSidebar, onClick }) => {
           alt={playlist.name}
           className="w-12 h-12 rounded object-cover"
         />
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
+        <div className="flex-1 min-w-0 ">
+          <div className="flex items-center gap-2 place-content-between">
             <p className="text-white text-sm font-medium truncate group-hover:text-purple-400">
               {playlist.name}
             </p>
@@ -35,9 +35,9 @@ const PlaylistCard = ({ playlist, isSidebar, onClick }) => {
   return (
     <Link
       to={`/playlist/${playlist.id}`}
-      className="bg-gray-800 rounded-lg overflow-hidden hover:bg-gray-700 transition-all group p-4"
+      className="bg-gray-800 rounded-lg overflow-hidden hover:bg-gray-700 transition-all group p-4 "
     >
-      <div className="aspect-square relative">
+      <div className="aspect-square relative ">
         <img
           src={playlist.images?.[0]?.url || '/default-playlist.png'}
           alt={playlist.name}

@@ -2,7 +2,7 @@ import VisibilityIcon from "../../../common/VisibilityIcon";
 
 const PlaylistHeader = ({ playlist, isInSidebar }) => {
   const headerClass = isInSidebar
-    ? "flex items-center gap-4"
+    ? "flex items-center gap-4 "
     : "flex items-center gap-8";
 
   const imageClass = isInSidebar
@@ -19,8 +19,8 @@ const PlaylistHeader = ({ playlist, isInSidebar }) => {
         className={imageClass}
       />
 
-      <div className="flex-1">
-        <div className="flex items-center gap-3">
+      <div className="flex-1 ">
+        <div className="flex items-center gap-3 ">
           <h2 className={titleClass}>{playlist.name}</h2>
           <VisibilityIcon isPublic={playlist.public} />
         </div>

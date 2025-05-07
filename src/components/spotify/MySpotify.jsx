@@ -227,7 +227,6 @@ const MySpotify = () => {
       {/* Nueva sección de búsqueda de usuarios */}
       <div className="mt-8">
         <div className="bg-gray-800 rounded-lg p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Buscar Usuarios</h2>
           <UserSearch />
         </div>
       </div>

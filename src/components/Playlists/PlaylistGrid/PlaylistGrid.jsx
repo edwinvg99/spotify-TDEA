@@ -64,7 +64,7 @@ const PlaylistGrid = ({ sidebarMode = true }) => {
   // Vista del sidebar con playlist seleccionada
   if (sidebarMode && selectedPlaylist) {
     return (
-      <div className="h-full overflow-y-scroll no-scrollbar">
+      <div className="h-full overflow-y-scroll no-scrollbar ">
         <BackButton onClick={() => setSelectedPlaylist(null)} />
         <PlaylistDetail playlistId={selectedPlaylist.id} isInSidebar={true} />
       </div>
@@ -85,7 +85,7 @@ const PlaylistGrid = ({ sidebarMode = true }) => {
             />
           </div>
         </div>
-        <div className="space-y-2 max-h-[calc(100vh-300px)] overflow-y-scroll no-scrollbar">
+        <div className="space-y-2 max-h-[calc(100vh-300px)] overflow-y-scroll no-scrollbar ">
           {filteredPlaylists.map(playlist => (
             <PlaylistCard
               key={playlist.id}

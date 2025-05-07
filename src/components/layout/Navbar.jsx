@@ -1,36 +1,12 @@
-import { useState } from "react";
-import { useSpotify } from "../../context/SpotifyContext";
-import ConnectButton from "../spotify/ConnectButton";
+import { useState } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { SPOTIFY_SCOPES } from '../../utils/spotifyScopes';
-
+import { useSpotify } from '../../context/SpotifyContext';
+import SpotifyAuth from '../Auth/SpotifyAuth';
 
 const Navbar = () => {
   const { token, loading } = useSpotify();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const handleLogin = () => {
-    if (loading) return;
-
-    // Generar state para protección CSRF
-    const state = crypto.randomUUID();
-    sessionStorage.setItem('auth_state', state);
-
-    
-    const params = new URLSearchParams({
-      client_id: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
-      response_type: 'code',
-      redirect_uri: import.meta.env.VITE_REDIRECT_URI,
-      state: state,
-      scope: SPOTIFY_SCOPES,
-      show_dialog: true
-    });
-
-    // Redirigir a Spotify
-    const authUrl = `https://accounts.spotify.com/authorize?${params.toString()}`;
-    console.log('Redirigiendo a:', authUrl);
-    window.location.href = authUrl;
-  };
 
   return (
     <nav className="bg-black bg-opacity-80 px-4 sm:px-8 py-4 shadow-lg">
@@ -64,13 +40,12 @@ const Navbar = () => {
                   Mi Spotify
                 </Link>
               </li>
-
             </>
           )}
         </ul>
 
         <div className="hidden lg:block">
-          {!token && !loading && <ConnectButton onClick={handleLogin} />}
+          {!token && !loading && <SpotifyAuth />}
         </div>
       </div>
 
@@ -82,7 +57,6 @@ const Navbar = () => {
               Sobre mí
             </Link>
           </li>
-
 
           {token && (
             <>
@@ -100,7 +74,7 @@ const Navbar = () => {
           )}
           {!token && !loading && (
             <li className="py-2">
-              <ConnectButton onClick={handleLogin} />
+              <SpotifyAuth />
             </li>
           )}
         </ul>
@@ -109,4 +83,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);

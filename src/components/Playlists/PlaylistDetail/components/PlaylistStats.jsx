@@ -3,7 +3,7 @@ const PlaylistStats = ({ playlist }) => {
       <div className="flex flex-wrap gap-x-6 gap-y-2 mt-3 text-sm">
         {/* Creador */}
         <p className="flex items-center text-gray-300">
-          <span className="font-semibold text-white hover:underline">
+          <span className="font-bold text-white hover:underline">
             {playlist.owner.display_name}
           </span>
         </p>
@@ -13,7 +13,7 @@ const PlaylistStats = ({ playlist }) => {
           <StatsItem
             icon="followers"
             text={`${playlist.followers.total.toLocaleString()} seguidores`}
-            color="emerald"
+            color="green"
           />
         )}
   
@@ -21,7 +21,7 @@ const PlaylistStats = ({ playlist }) => {
         <StatsItem
           icon="songs"
           text={`${playlist.tracks.total} canciones`}
-          color="sky"
+          color="blue"
         />
   
         {/* Fecha */}
