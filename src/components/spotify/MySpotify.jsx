@@ -224,7 +224,7 @@ const MySpotify = () => {
         )}
       </div>
 
-      {/* Nueva sección de búsqueda de usuarios */}
+      {/*  sección de búsqueda de usuarios */}
       <div className="mt-8">
         <div className="bg-gray-800 rounded-lg p-6">
           <UserSearch />

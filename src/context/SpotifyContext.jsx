@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LOGOUT_EVENT } from '../components/auth/AuthApp/AuthContext';
 
 const SpotifyContext = createContext();
 
@@ -125,6 +126,24 @@ export const SpotifyProvider = ({ children }) => {
 
     validateToken();
   }, []);
+
+  useEffect(() => {
+    // Escuchar el evento de cierre de sesión de Firebase
+    const handleFirebaseLogout = () => {
+      // Cerrar sesión de Spotify
+      if (typeof logout === 'function') {
+        logout();
+      }
+    };
+    
+    // Registrar el listener
+    window.addEventListener(LOGOUT_EVENT, handleFirebaseLogout);
+    
+    // Limpiar el listener al desmontar
+    return () => {
+      window.removeEventListener(LOGOUT_EVENT, handleFirebaseLogout);
+    };
+  }, [logout]);
 
   return (
     <SpotifyContext.Provider value={{

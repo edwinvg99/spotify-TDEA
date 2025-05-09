@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { useSpotify } from "./context/SpotifyContext";
+import { useAuth } from "./components/auth/AuthApp/AuthContext";
 import Navbar from "./components/layout/Navbar";
 import Header from "./components/layout/Header";
 import MainContent from "./components/layout/MainContent";
@@ -9,9 +10,16 @@ import Footer from "./components/layout/Footer";
 import PlaylistDetail from "./components/Playlists/PlaylistDetail/PlaylistDetail";
 import MySpotify from "./components/spotify/MySpotify";
 import Mysounds from "./components/spotify/Mysounds";
+import MyProfile from "./components/spotify/MyProfile";
+
+
+import Login from "./components/auth/AuthApp/loginApp";
+import SignUp from "./components/auth/AuthApp/registerApp";
+import { ToastContainer } from "react-toastify";
 
 function App() {
-  const { token, exchangeCodeForToken, loading } = useSpotify();
+  const { token, exchangeCodeForToken, loading: spotifyLoading } = useSpotify();
+  const { user, loading: authLoading } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [processingAuth, setProcessingAuth] = useState(false);
@@ -21,37 +29,33 @@ function App() {
   // Detectar modo móvil
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024); // 1024px es el breakpoint lg de Tailwind
+      setIsMobile(window.innerWidth < 1024);
     };
 
-    // Verificar inicialmente
     checkMobile();
-
-    // Escuchar cambios de tamaño de ventana
-    window.addEventListener('resize', checkMobile);
-
-    // Limpiar listener
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Manejar callback de Spotify
   useEffect(() => {
     const handleCallback = async () => {
-      if (location.pathname === '/callback' && !processingAuth) {
+      if (location.pathname === "/callback" && !processingAuth) {
         const params = new URLSearchParams(location.search);
-        const code = params.get('code');
-        
+        const code = params.get("code");
+
         if (code && code !== processedCodeRef.current) {
           setProcessingAuth(true);
           processedCodeRef.current = code;
-          
+
           try {
             const token = await exchangeCodeForToken(code);
             if (token) {
-              navigate('/', { replace: true });
+              navigate("/", { replace: true });
             }
           } catch (error) {
-            console.error('Error en callback:', error);
-            navigate('/', { replace: true });
+            console.error("Error en callback:", error);
+            navigate("/", { replace: true });
           } finally {
             setProcessingAuth(false);
           }
@@ -62,14 +66,17 @@ function App() {
     handleCallback();
   }, [location, exchangeCodeForToken, navigate, processingAuth]);
 
-  // Efecto para redireccionar cuando el token cambie a null (logout)
+  // Redirigir a login si no hay usuario autenticado y no es una ruta de auth
   useEffect(() => {
-    if (!token && !loading && !processingAuth) {
-      navigate('/', { replace: true });
+    if (!authLoading && !user) {
+      if (location.pathname !== '/login' && location.pathname !== '/register') {
+        navigate('/login', { replace: true });
+      }
     }
-  }, [token, loading, processingAuth, navigate]);
+  }, [user, authLoading, location.pathname, navigate]);
 
-  if (loading || processingAuth) {
+  // Mostrar pantalla de carga
+  if (authLoading || spotifyLoading || processingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
         <div className="text-white text-xl">Cargando...</div>
@@ -77,43 +84,52 @@ function App() {
     );
   }
 
+  // Si no hay usuario autenticado, mostrar formulario de login/registro a pantalla completa
+  if (!user) {
+    return (
+    <div className="h-screen w-full flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-purple-900">
+
+          
+          <Routes>
+            <Route path="/register" element={<SignUp />} />
+            <Route path="*" element={<Login />} />
+          </Routes>
+          <ToastContainer />
+    </div>
+    );
+  }
+
+  // Interfaz para usuario autenticado
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-black via-gray-900 to-purple-900">
-      {/* Contenedor principal */}
       <div className={`flex-1 flex flex-col transition-all duration-300 ${
         token && !isMobile ? "lg:pr-[25%]" : "w-full"
       }`}>
         <Navbar />
+        
         <div className="flex-1 pb-24 px-4 sm:px-6 lg:px-8">
           <Routes>
             <Route path="/playlist/:playlistId" element={<PlaylistDetail />} />
             <Route path="/my-spotify" element={<MySpotify />} />
-            <Route path="/Mysounds" element={
+            <Route path="/my-perfil" element={<MyProfile />} />
+
+            <Route path="/mysounds" element={
               <div className="w-full max-w-7xl mx-auto">
                 <Mysounds />
               </div>
             } />
             <Route path="*" element={<MainContent />} />
+
           </Routes>
+          <ToastContainer />
         </div>
+        
         <Footer />
       </div>
 
-      {/* Sidebar fijo con estilos responsive */}
       {token && !isMobile && (
-        <aside className="
-          fixed right-0 top-0 h-screen
-          w-full lg:w-1/4 
-          bg-gray-950 border-l border-purple-900
-          overflow-hidden transition-all duration-300
-          z-30
-        ">
-          <div className="
-            h-full w-full overflow-y-auto
-            px-4 sm:px-6 lg:px-4
-            py-6
-            scrollbar-thin scrollbar-thumb-purple-900 scrollbar-track-gray-800
-          ">
+        <aside className="fixed right-0 top-0 h-screen w-full lg:w-1/4 bg-gray-950 border-l border-purple-900 overflow-hidden transition-all duration-300 z-30">
+          <div className="h-full w-full overflow-y-auto px-4 sm:px-6 lg:px-4 py-6 scrollbar-thin scrollbar-thumb-purple-900 scrollbar-track-gray-800">
             <Dashboard sidebarMode={true} />
           </div>
         </aside>

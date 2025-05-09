@@ -22,7 +22,7 @@ body {
   }
 }
 
-/* ==== Estilos para el reproductor ==== */
+/*  Estilos para el reproductor  */
 .player-controls {
   display: flex;
   flex-direction: column;

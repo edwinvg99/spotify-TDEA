@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { SPOTIFY_SCOPES } from '../../utils/spotifyScopes';
+import { SPOTIFY_SCOPES } from '../../../utils/spotifyScopes';
 import ConnectButton from './ConnectButton';
 
 const SpotifyAuth = () => {

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
+import SpotifyAuth from '../auth/AuthSpotify/SpotifyAuth';
 import { useSpotify } from '../../context/SpotifyContext';
-import SpotifyAuth from '../Auth/SpotifyAuth';
+
 
 const Navbar = () => {
   const { token, loading } = useSpotify();
@@ -29,10 +30,15 @@ const Navbar = () => {
         {/* Menú de escritorio */}
         <ul className="hidden lg:flex gap-8 text-white font-semibold">
           <li>
-            <Link to="/" className="hover:text-purple-400 transition-colors">
+            <Link to="/sobreMi" className="hover:text-purple-400 transition-colors font-bold ">
               Sobre mí
             </Link>
           </li>
+          <li>
+                <Link to="/my-perfil" className="hover:text-sky-400 transition-colors font-bold ">
+                  Mi perfil
+                </Link>
+              </li>
           {token && (
             <>
               <li>
@@ -40,6 +46,8 @@ const Navbar = () => {
                   Mi Spotify
                 </Link>
               </li>
+              
+  
             </>
           )}
         </ul>
@@ -53,20 +61,25 @@ const Navbar = () => {
       <div className={`lg:hidden ${isMenuOpen ? 'block' : 'hidden'} mt-4`}>
         <ul className="flex flex-col gap-4 text-white font-semibold">
           <li>
-            <Link to="/" className="block py-2 hover:text-purple-400 transition-colors">
+            <Link to="/sobreMi" className="block py-2 hover:text-purple-400 transition-colors">
               Sobre mí
             </Link>
           </li>
+          <li>
+                <Link to="/my-perfil" className="hover:text-sky-400 transition-colors">
+                  Mi perfil
+                </Link>
+              </li>
 
           {token && (
             <>
               <li>
-                <Link to="/my-spotify" className="block py-2 hover:text-purple-400 transition-colors">
+                <Link to="/my-spotify" className="block py-2 hover:text-green-400 transition-colors">
                   Mi Spotify
                 </Link>
               </li>
               <li>
-                <Link to="/Mysounds" className="block py-2 hover:text-purple-400 transition-colors">
+                <Link to="/Mysounds" className="block py-2 hover:text-green-400 transition-colors">
                   Mi musica
                 </Link>
               </li>

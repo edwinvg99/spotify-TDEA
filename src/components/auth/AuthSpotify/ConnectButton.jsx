@@ -7,7 +7,7 @@ const ConnectButton = ({ onClick, isAuthenticating }) => {
       disabled={isAuthenticating}
       className={`
         bg-green-500 hover:bg-green-600 text-white font-bold 
-        py-4 px-6 rounded-full transition-colors
+        py-2 px-3 rounded-full transition-colors
         ${isAuthenticating ? 'opacity-50 cursor-not-allowed' : ''}
       `}
     >
