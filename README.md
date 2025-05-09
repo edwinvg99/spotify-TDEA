@@ -1,109 +1,101 @@
-# Spotify TDEA
+# 🎵 Spotify Clone TDEA
 
-Esta aplicación es un "clon" de Spotify que  se desarrollo usando React + Vite. Permite conectarse con la API de Spotify, ver playlists y sus detalles, canciones etc y reproducir música usando el SDK oficial de Spotify.
+Un clon de Spotify desarrollado con **React** y **Vite**, que se integra con la **API de Spotify**, permitiendo la reproducción de música, gestión de playlists y perfiles de usuario. Cuenta con **autenticación dual** (Spotify y Firebase) y un reproductor de música con el **SDK oficial de Spotify**.
 
-## 🚀 Características Principales
+![Banner DJ](./ruta/a/tu/banner.jpg)
 
-- Autenticación con Spotify
-- Visualización de datos del perfil del usuario
-- Lista de playlists del usuario
-- Reproducción de música
-- Controles de reproducción (play, pause)
-- Barra de progreso de reproducción
+---
+
+## 📋 Tabla de Contenidos
+
+- [🚀 Características](#-características)
+- [💻 Tecnologías](#-tecnologías)
+- [🏗️ Estructura del Proyecto](#️-estructura-del-proyecto)
+- [🛠️ Instalación](#️-instalación)
+- [⚙️ Configuración](#️-configuración)
+- [🔐 Autenticación](#-autenticación)
+- [🏛️ Arquitectura](#️-arquitectura)
+- [👥 Contribución](#-contribución)
+- [🔮 Próximas Mejoras](#-próximas-mejoras)
+
+---
+
+## 🚀 Características
+
+- 🔐 **Autenticación dual**: Firebase Auth + OAuth de Spotify  
+- 👤 **Perfil de usuario**: Visualización y edición  
+- 🎶 **Exploración de música**: Playlists, canciones y artistas  
+- ▶️ **Reproductor de música**: Control completo con el SDK de Spotify  
+- 📱 **Diseño responsivo**: Adaptado a móviles y escritorio  
+- ⏱️ **Interfaz en tiempo real**: Progreso de reproducción  
+- 📊 **Estadísticas de Spotify**: Artistas y géneros favoritos  
+- 🎧 **Galería de eventos DJ**: Sección para promoción de eventos  
+
+---
+
+## 💻 Tecnologías
+
+- **Frontend**: React 18 + Vite  
+- **Estilos**: TailwindCSS  
+- **Autenticación**: Firebase Authentication  
+- **Base de datos**: Firebase Firestore  
+- **Almacenamiento**: Firebase Storage  
+- **Ruteo**: React Router v6  
+- **Notificaciones**: React Toastify  
+- **APIs**: Spotify Web API, Spotify Web Playback SDK  
+
+---
 
 ## 🏗️ Estructura del Proyecto
 
 ### 📁 Componentes Principales
 
-- `Auth/`: Maneja la autenticación
-  - `Login.jsx`: Pantalla de inicio de sesión con Spotify
-  - `SpotifyAuth.jsx`: Lógica de autenticación OAuth
+#### 🔐 Autenticación
+- `AuthContext.jsx`: Contexto central para autenticación con Firebase  
+- `loginApp.jsx`: Formulario de inicio de sesión  
+- `registerApp.jsx`: Registro con carga de foto  
+- `signInGoogleApp.jsx`: Autenticación con Google  
 
-- `Dashboard/`: 
-  - `Dashboard.jsx`: Pantalla principal que muestra el perfil y playlists
+#### 👤 Perfil
+- `MyProfile.jsx`: Ver y editar perfil  
+- `ProfileSection.jsx`: Vista del perfil en el dashboard  
 
-- `Player/`: 
-  - `SpotifyPlayer.jsx`: Reproductor de música usando SDK de Spotify
-  - `PlayerControls.jsx`: Controles de reproducción (play/pause)
+#### 🎵 Música
+- `SpotifyPlayer.jsx`: Reproductor principal  
+- `PlayButton.jsx`: Botón de reproducción/pausa  
+- `ProgressBar.jsx`: Barra de progreso  
+- `TrackInfo.jsx`: Información de la canción actual  
 
-- `Playlists/`:
-  - `PlaylistGrid.jsx`: Cuadrícula de playlists del usuario
-  - `PlaylistDetail.jsx`: Vista detallada de una playlist
+#### 📋 Playlists
+- `PlaylistGrid.jsx`: Cuadrícula de playlists  
+- `PlaylistDetail.jsx`: Vista detallada de una playlist  
+- `PlaylistCard.jsx`: Tarjeta individual  
 
-### 🎣 Hooks Personalizados
+#### 🎛️ Dashboard
+- `Dashboard.jsx`: Panel principal de usuario  
+- `MySpotify.jsx`: Estadísticas personales  
 
-- `useSpotifySDK.js`: 
-  - Maneja la integración con el SDK de Spotify
-  - Controla la reproducción de música
-  - Maneja estados de reproducción y progreso
+#### 🎣 Hooks Personalizados
+- `useSpotifySDK.jsx`: Integración con el SDK  
+- `useAuth.jsx`: Acceso al contexto de autenticación  
 
-- `SpotifyContext.jsx`: 
-  - Gestiona el estado global de la autenticación
-  - Maneja el token de acceso
-  - Provee el hook `useSpotify`
+#### 🌐 Contextos
+- `SpotifyContext.jsx`: Manejo de datos y tokens de Spotify  
+- `AuthContext.jsx`: Manejo global de sesión con Firebase  
 
-### 🌐 Conexión con Spotify
+---
 
-#### Autenticación
-La conexión con Spotify se realiza en `SpotifyAuth.jsx` usando OAuth 2.0:
-```javascript
-const scopes = [
-  'user-read-private',
-  'user-read-email',
-  'playlist-read-private',
-  'streaming',
-  // ...más scopes
-];
-```
+## 🛠️ Instalación
 
-#### Endpoints Principales
-Los endpoints se manejan en `services/spotify.js`:
-- `/me`: Obtener perfil de usuario
-- `/me/playlists`: Obtener playlists
-- `/playlists/{id}`: Obtener detalles de playlist
-- `/me/player/play`: Controlar reproducción
+```bash
+# Clona el repositorio
+git clone https://github.com/tu-usuario/spotify-clone-tdea.git
+cd spotify-clone-tdea
 
-### 🎵 SDK de Spotify
+# Instala dependencias
+npm install
 
-El SDK de Spotify (Web Playback SDK) se integra en `useSpotifySDK.js` y permite:
-- Reproducir música directamente en el navegador
-- Controlar la reproducción
-- Obtener estados de reproducción
-- Manejar eventos del reproductor
+# Crea un archivo .env en la raíz con las variables necesarias
 
-## 🚦 Estados y Manejo de Errores
-
-- Loading states: Uso de esqueletos de carga (skeletons)
-- Error handling: Mensajes de error amigables
-- Estados de reproducción: Play, pause, loading
-
-## 🔧 Variables de Entorno Necesarias
-
-```env
-VITE_SPOTIFY_CLIENT_ID=tu_client_id
-VITE_SPOTIFY_CLIENT_SECRET=tu_client_secret
-VITE_REDIRECT_URI=http://127.0.0.1:8000/callback
-```
-
-## 📚 Tecnologías Utilizadas
-
-- React + Vite
-- Tailwind CSS para estilos
-- React Router para navegación
-- Spotify Web API
-- Spotify Web Playback SDK
-
-## 🏃‍♂️ Cómo Ejecutar el Proyecto
-
-1. Clona el repositorio
-2. Instala dependencias: `npm install`
-3. Crea un archivo `.env` con las variables necesarias
-4. Ejecuta: `npm run dev`
-5. Abre: `http://127.0.0.1:8000`
-
-## 🎯 Próximas Mejoras
-- [ ] Priorizar lo solicitado en el docuemnto del profesor 
-- [ ] Añadir búsqueda de canciones
-- [ ] Mejorar manejo de errores
-- [ ] Implementar controles de volumen, siguiente cancion y anterior
-- [ ] Añadir modo offline
+# Ejecuta el servidor de desarrollo
+npm run dev
