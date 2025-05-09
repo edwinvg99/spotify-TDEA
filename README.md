@@ -1,10 +1,8 @@
-# 🎵 Spotify Clone TDEA
+# 🎵 Spotify TDEA
 
-Un clon de Spotify desarrollado con **React** y **Vite**, que se integra con la **API de Spotify**, permitiendo la reproducción de música, gestión de playlists y perfiles de usuario. Cuenta con **autenticación dual** (Spotify y Firebase) y un reproductor de música con el **SDK oficial de Spotify**.
+Una App que integra Spotify desarrollado con **React** y **Vite**, que se integra con la **API de Spotify**, permitiendo la reproducción de música, visualizacion de playlists y perfiles de usuario. Cuenta con **autenticación dual** (Spotify y Firebase) y un reproductor de música con el **SDK oficial de Spotify**.
 
-![Banner DJ](./ruta/a/tu/banner.jpg)
 
----
 
 ## 📋 Tabla de Contenidos
 
@@ -24,8 +22,8 @@ Un clon de Spotify desarrollado con **React** y **Vite**, que se integra con la 
 
 - 🔐 **Autenticación dual**: Firebase Auth + OAuth de Spotify  
 - 👤 **Perfil de usuario**: Visualización y edición  
-- 🎶 **Exploración de música**: Playlists, canciones y artistas  
-- ▶️ **Reproductor de música**: Control completo con el SDK de Spotify  
+- 🎶 **Exploración de música**: Playlists y canciones  
+- ▶️ **Reproductor de música**: con el SDK de Spotify  
 - 📱 **Diseño responsivo**: Adaptado a móviles y escritorio  
 - ⏱️ **Interfaz en tiempo real**: Progreso de reproducción  
 - 📊 **Estadísticas de Spotify**: Artistas y géneros favoritos  
@@ -46,7 +44,6 @@ Un clon de Spotify desarrollado con **React** y **Vite**, que se integra con la 
 
 ---
 
-## 🏗️ Estructura del Proyecto
 
 ### 📁 Componentes Principales
 
@@ -89,13 +86,18 @@ Un clon de Spotify desarrollado con **React** y **Vite**, que se integra con la 
 
 ```bash
 # Clona el repositorio
-git clone https://github.com/tu-usuario/spotify-clone-tdea.git
+git clone https://github.com/edwinvg99/spotify-TDEA.git
 cd spotify-clone-tdea
 
 # Instala dependencias
 npm install
 
 # Crea un archivo .env en la raíz con las variables necesarias
+VITE_SPOTIFY_CLIENT_ID=
+VITE_SPOTIFY_CLIENT_SECRET=
+VITE_REDIRECT_URI=http://127.0.0.1:8000/callback
+VITE_SPOTIFY_SDK_SCRIPT=https://sdk.scdn.co/spotify-player.js
+VITE_PLAYER_NAME=Spotify Clone TDEA
 
 # Ejecuta el servidor de desarrollo
 npm run dev
