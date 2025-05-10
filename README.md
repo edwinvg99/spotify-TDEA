@@ -8,13 +8,8 @@ Una App que integra Spotify desarrollado con **React** y **Vite**, que se integr
 
 - [🚀 Características](#-características)
 - [💻 Tecnologías](#-tecnologías)
-- [🏗️ Estructura del Proyecto](#️-estructura-del-proyecto)
+- [🔐 Componentes principales](#-autenticación)
 - [🛠️ Instalación](#️-instalación)
-- [⚙️ Configuración](#️-configuración)
-- [🔐 Autenticación](#-autenticación)
-- [🏛️ Arquitectura](#️-arquitectura)
-- [👥 Contribución](#-contribución)
-- [🔮 Próximas Mejoras](#-próximas-mejoras)
 
 ---
 
