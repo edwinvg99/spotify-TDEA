@@ -1,20 +1,26 @@
 import { useEffect, useState, useRef } from "react";
-import { Routes, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
-import { useSpotify } from "./context/SpotifyContext";
-import { useAuth } from "./components/auth/AuthApp/AuthContext";
-import Navbar from "./components/layout/Navbar";
-import Header from "./components/layout/Header";
-import MainContent from "./components/layout/MainContent";
-import Dashboard from "./components/Dashboard/Dashboard";
-import Footer from "./components/layout/Footer";
-import PlaylistDetail from "./components/Playlists/PlaylistDetail/PlaylistDetail";
-import MySpotify from "./components/spotify/MySpotify";
-import Mysounds from "./components/spotify/Mysounds";
-import MyProfile from "./components/spotify/MyProfile";
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
+import { useSpotify } from "./features/authSpotify/context/SpotifyContext";
+import { useAuth } from "./features/authFirebase/context/AuthContext";
+import Navbar from "./shared/components/layout/Navbar";
+import Header from "./shared/components/layout/Header";
+import MainContent from "./shared/components/layout/MainContent";
+import Dashboard from "./features/dashboard/components/Dashboard";
+import Footer from "./shared/components/layout/Footer";
+import PlaylistDetail from "./features/playLists/components/PlaylistDetail";
+import MySpotify from "./features/dashboard/components/MySpotify";
+import Mysounds from "./features/dashboard/components/Mysounds";
+import MyProfile from "./features/userProfile/components/MyProfile";
+import PlaylistLogger from "./features/authSpotify/components/PlaylistLogger";
 
-
-import Login from "./components/auth/AuthApp/loginApp";
-import SignUp from "./components/auth/AuthApp/registerApp";
+import Login from "./features/authFirebase/components/loginApp";
+import SignUp from "./features/authFirebase/components/registerApp";
 import { ToastContainer } from "react-toastify";
 
 function App() {
@@ -69,13 +75,12 @@ function App() {
   // Redirigir a login si no hay usuario autenticado y no es una ruta de auth
   useEffect(() => {
     if (!authLoading && !user) {
-      if (location.pathname !== '/login' && location.pathname !== '/register') {
-        navigate('/login', { replace: true });
+      if (location.pathname !== "/login" && location.pathname !== "/register") {
+        navigate("/login", { replace: true });
       }
     }
   }, [user, authLoading, location.pathname, navigate]);
 
-  // Mostrar pantalla de carga
   if (authLoading || spotifyLoading || processingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
@@ -87,43 +92,45 @@ function App() {
   // Si no hay usuario autenticado, mostrar formulario de login/registro a pantalla completa
   if (!user) {
     return (
-    <div className="h-screen w-full flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-purple-900">
-
-          
-          <Routes>
-            <Route path="/register" element={<SignUp />} />
-            <Route path="*" element={<Login />} />
-          </Routes>
-          <ToastContainer />
-    </div>
+      <div className="h-screen w-full flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-purple-900">
+        <Routes>
+          <Route path="/register" element={<SignUp />} />
+          <Route path="*" element={<Login />} />
+        </Routes>
+        <ToastContainer />
+      </div>
     );
   }
 
   // Interfaz para usuario autenticado
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-black via-gray-900 to-purple-900">
-      <div className={`flex-1 flex flex-col transition-all duration-300 ${
-        token && !isMobile ? "lg:pr-[25%]" : "w-full"
-      }`}>
+      <div
+        className={`flex-1 flex flex-col transition-all duration-300 ${
+          token && !isMobile ? "lg:pr-[25%]" : "w-full"
+        }`}
+      >
         <Navbar />
-        
+
         <div className="flex-1 pb-24 px-4 sm:px-6 lg:px-8">
           <Routes>
             <Route path="/playlist/:playlistId" element={<PlaylistDetail />} />
             <Route path="/my-spotify" element={<MySpotify />} />
             <Route path="/my-perfil" element={<MyProfile />} />
 
-            <Route path="/mysounds" element={
-              <div className="w-full max-w-7xl mx-auto">
-                <Mysounds />
-              </div>
-            } />
+            <Route
+              path="/mysounds"
+              element={
+                <div className="w-full max-w-7xl mx-auto">
+                  <Mysounds />
+                </div>
+              }
+            />
             <Route path="*" element={<MainContent />} />
-
           </Routes>
           <ToastContainer />
         </div>
-        
+
         <Footer />
       </div>
 
