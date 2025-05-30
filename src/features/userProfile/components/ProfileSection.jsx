@@ -15,25 +15,27 @@ const ProfileSection = ({ profile, sidebarMode }) => {
   if (sidebarMode) {
     return (
       <div className="px-4 pb-4 border-b border-gray-600">
-        <div className="flex items-center justify-between gap-4 pt-4">
-          {profile.images?.[0]?.url && (
-            <img
-              src={profile.images[0].url}
-              alt="Foto de perfil"
-              className="rounded-full w-14 h-14 object-cover shadow-md border-2 border-purple-600"
-            />
-          )}
-          <div className="flex flex-col">
-            <p className="text-base font-semibold text-white leading-tight">
-              {profile.display_name}
-            </p>
-            <p className="text-sm text-gray-400 leading-tight">
-              {profile.email}
-            </p>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4">
+          <div className="flex items-center gap-4 flex-1 min-w-0">
+            {profile.images?.[0]?.url && (
+              <img
+                src={profile.images[0].url}
+                alt="Foto de perfil"
+                className="rounded-full w-14 h-14 object-cover shadow-md border-2 border-purple-600 flex-shrink-0"
+              />
+            )}
+            <div className="flex flex-col min-w-0">
+              <p className="text-base font-semibold text-white leading-tight truncate">
+                {profile.display_name}
+              </p>
+              <p className="text-sm text-gray-400 leading-tight truncate">
+                {profile.email}
+              </p>
+            </div>
           </div>
           <button
             onClick={handleLogout}
-            className="bg-white hover:bg-red-700 hover:text-white text-purple text-xs py-1 px-3 rounded-full shadow transition-colors"
+            className="bg-white hover:bg-red-700 hover:text-white text-purple text-xs py-1 px-3 rounded-full shadow transition-colors flex-shrink-0 self-end sm:self-auto"
           >
             Salir
           </button>
