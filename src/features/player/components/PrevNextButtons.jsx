@@ -6,52 +6,38 @@ const PrevNextButtons = ({
   isPlaying,
   togglePlay,
   sidebarMode,
-}) => (
-  <>
-    <button
-      onClick={previousTrack}
-      className="p-2 rounded-full hover:bg-gray-800 transition-colors text-gray-400 hover:text-white"
-    >
-      <svg
-        className={`w-${sidebarMode ? 4 : 5} h-${sidebarMode ? 4 : 5}`}
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
-        />
-      </svg>
-    </button>
+}) => {
+  const iconClass = sidebarMode ? "w-4 h-4" : "w-5 h-5";
 
-    <PlayButton
-      isPlaying={isPlaying}
-      togglePlay={togglePlay}
-      sidebarMode={sidebarMode}
-    />
-
-    <button
-      onClick={nextTrack}
-      className="p-2 rounded-full hover:bg-gray-800 transition-colors text-gray-400 hover:text-white"
-    >
-      <svg
-        className={`w-${sidebarMode ? 4 : 5} h-${sidebarMode ? 4 : 5}`}
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
+  return (
+    <>
+      <button
+        onClick={previousTrack}
+        className="p-2 rounded-full hover:bg-gray-800 transition-colors text-gray-400 hover:text-white active:scale-95"
+        aria-label="Anterior"
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 5l7 7-7 7M5 5l7 7-7 7"
-        />
-      </svg>
-    </button>
-  </>
-);
+        <svg className={iconClass} fill="currentColor" viewBox="0 0 24 24">
+          <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
+        </svg>
+      </button>
+
+      <PlayButton
+        isPlaying={isPlaying}
+        togglePlay={togglePlay}
+        sidebarMode={sidebarMode}
+      />
+
+      <button
+        onClick={nextTrack}
+        className="p-2 rounded-full hover:bg-gray-800 transition-colors text-gray-400 hover:text-white active:scale-95"
+        aria-label="Siguiente"
+      >
+        <svg className={iconClass} fill="currentColor" viewBox="0 0 24 24">
+          <path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z" />
+        </svg>
+      </button>
+    </>
+  );
+};
 
 export default PrevNextButtons;

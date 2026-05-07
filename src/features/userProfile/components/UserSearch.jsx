@@ -6,35 +6,28 @@ const UserSearch = ({ sidebarMode = false }) => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
-
-    // Construir la URL de búsqueda de Spotify
-    const spotifySearchUrl = `https://open.spotify.com/search/${encodeURIComponent(
-      searchQuery
-    )}/users`;
-
-    // Abrir en una nueva pestaña
+    const spotifySearchUrl = `https://open.spotify.com/search/${encodeURIComponent(searchQuery)}/users`;
     window.open(spotifySearchUrl, "_blank");
   };
 
   return (
-    <div className="bg-gray-800 p-4 rounded-lg">
-      <h3 className="text-white text-lg font-semibold mb-4">Buscar Usuarios</h3>
-      <form onSubmit={handleSearch} className="flex gap-2">
+    <div className="bg-gray-800 p-4 sm:p-5 rounded-xl">
+      <h3 className="text-white text-sm sm:text-base font-semibold mb-3">Buscar Usuarios</h3>
+      <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2">
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Buscar usuarios de Spotify..."
-          className="flex-1 px-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:border-purple-500"
+          className="flex-1 min-w-0 px-3 py-2.5 rounded-lg bg-gray-700 text-white text-sm placeholder-gray-400 border border-gray-600 focus:outline-none focus:border-purple-500 transition-colors"
         />
         <button
           type="submit"
-          className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+          className="min-h-11 px-5 py-2.5 bg-green-500 hover:bg-green-400 active:bg-green-600 text-white text-sm font-medium rounded-lg transition-colors shrink-0"
         >
           Buscar
         </button>
       </form>
-      <p className="text-gray-600 text-sm mt-2 ml-2"></p>
     </div>
   );
 };

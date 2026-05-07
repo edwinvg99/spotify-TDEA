@@ -12,14 +12,13 @@ const Navbar = () => {
     <nav className="bg-black bg-opacity-80 px-4 sm:px-8 py-4 shadow-lg">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 sm:gap-4">
-          <img
-            src="/assets/dj-logo.png"
-            alt="DJ Logo"
-            className="h-8 w-8 sm:h-10 sm:w-10 rounded-full"
-          />
-          <span className="text-xl sm:text-2xl font-bold text-purple-400">
-            DJ Nova
-          </span>
+          <Link to="/" aria-label="Ir al inicio">
+            <img
+              src="/assets/dj-logo.png"
+              alt="DJ Logo"
+              className="h-8 w-8 sm:h-10 sm:w-10 rounded-full hover:opacity-80 transition-opacity"
+            />
+          </Link>
         </div>
 
         {/* Botón de menú hamburguesa para móviles */}
@@ -88,6 +87,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/sobreMi"
+              onClick={() => setIsMenuOpen(false)}
               className="block py-2 hover:text-purple-400 transition-colors"
             >
               Sobre mí
@@ -96,7 +96,8 @@ const Navbar = () => {
           <li>
             <Link
               to="/my-perfil"
-              className="hover:text-sky-400 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+              className="block py-2 hover:text-sky-400 transition-colors"
             >
               Mi perfil
             </Link>
@@ -107,6 +108,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/my-spotify"
+                  onClick={() => setIsMenuOpen(false)}
                   className="block py-2 hover:text-green-400 transition-colors"
                 >
                   Mi Spotify
@@ -115,6 +117,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/Mysounds"
+                  onClick={() => setIsMenuOpen(false)}
                   className="block py-2 hover:text-green-400 transition-colors"
                 >
                   Mi musica

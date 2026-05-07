@@ -8,11 +8,12 @@ const ProgressBar = ({
   progressBarStyle,
   sidebarMode,
 }) => (
-  <div className="w-full flex items-center gap-2">
-    <span className={`text-xs text-white w-${sidebarMode ? 8 : 10}`}>
+  <div className="w-full flex items-center gap-2 group">
+    <span className="text-xs text-gray-400 w-8 text-right tabular-nums shrink-0">
       {formatTime(progress)}
     </span>
-    <div className="flex-1 relative">
+
+    <div className="flex-1 relative flex items-center">
       <input
         type="range"
         min="0"
@@ -23,11 +24,13 @@ const ProgressBar = ({
         onMouseUp={handleDragEnd}
         onTouchStart={handleDragStart}
         onTouchEnd={handleDragEnd}
-        className="custom-progress-bar w-full z-10 relative"
+        className="custom-progress-bar progress-bar-interactive w-full z-10 relative"
         style={progressBarStyle}
+        aria-label="Progreso de reproducción"
       />
     </div>
-    <span className={`text-xs text-white w-${sidebarMode ? 8 : 10}`}>
+
+    <span className="text-xs text-gray-500 w-8 tabular-nums shrink-0">
       {formatTime(duration)}
     </span>
   </div>

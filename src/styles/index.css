@@ -167,8 +167,75 @@ input[type="range"]:active::-moz-range-thumb {
   background: linear-gradient(
     to right,
     #1db954 var(--progress-percentage, 0%),
-    #4a4a4a var(--progress-percentage, 0%)
+    #3a3a3a var(--progress-percentage, 0%)
   ) !important;
+  height: 4px;
+  transition: height 0.15s ease;
+}
+
+/* Barra de volumen — blanca para diferenciarla del progreso verde */
+.custom-volume-bar {
+  background: linear-gradient(
+    to right,
+    #ffffff var(--progress-percentage, 0%),
+    #3a3a3a var(--progress-percentage, 0%)
+  ) !important;
+  height: 4px;
+  transition: height 0.15s ease;
+}
+
+.custom-volume-bar::-webkit-slider-thumb {
+  background: #ffffff !important;
+}
+
+.custom-volume-bar::-moz-range-thumb {
+  background: #ffffff !important;
+}
+
+.custom-volume-bar:hover::-webkit-slider-thumb {
+  background: #e0e0e0 !important;
+  opacity: 1;
+}
+
+.custom-volume-bar:hover::-moz-range-thumb {
+  background: #e0e0e0 !important;
+  opacity: 1;
+}
+
+/* La barra crece en altura al hacer hover en el contenedor padre */
+.progress-bar-interactive:hover {
+  height: 6px;
+  cursor: pointer;
+}
+
+.progress-bar-interactive:hover::-webkit-slider-thumb {
+  opacity: 1 !important;
+  transform: scale(1.1);
+}
+
+.progress-bar-interactive:hover::-moz-range-thumb {
+  opacity: 1 !important;
+  transform: scale(1.1);
+}
+
+.progress-bar-interactive:active::-webkit-slider-thumb {
+  opacity: 1 !important;
+  transform: scale(1.25);
+}
+
+.progress-bar-interactive:active::-moz-range-thumb {
+  opacity: 1 !important;
+  transform: scale(1.25);
+}
+
+/* Pulsación lenta para el botón flotante cuando hay música reproduciéndose */
+@keyframes pulse-slow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(30, 215, 96, 0.5); }
+  50%       { box-shadow: 0 0 0 10px rgba(30, 215, 96, 0); }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s ease-in-out infinite;
 }
 
 /* Utilidades para ocultar la barra de desplazamiento */

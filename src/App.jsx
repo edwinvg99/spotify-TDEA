@@ -17,7 +17,7 @@ import PlaylistDetail from "./features/playLists/components/PlaylistDetail";
 import MySpotify from "./features/dashboard/components/MySpotify";
 import Mysounds from "./features/dashboard/components/Mysounds";
 import MyProfile from "./features/userProfile/components/MyProfile";
-import PlaylistLogger from "./features/authSpotify/components/PlaylistLogger";
+import MobilePlayerDrawer from "./features/player/components/MobilePlayerDrawer";
 
 import Login from "./features/authFirebase/components/loginApp";
 import SignUp from "./features/authFirebase/components/registerApp";
@@ -31,19 +31,15 @@ function App() {
   const [processingAuth, setProcessingAuth] = useState(false);
   const processedCodeRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [asideExpanded, setAsideExpanded] = useState(false);
 
-  // Detectar modo móvil
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Manejar callback de Spotify
   useEffect(() => {
     const handleCallback = async () => {
       if (location.pathname === "/callback" && !processingAuth) {
@@ -56,9 +52,7 @@ function App() {
 
           try {
             const token = await exchangeCodeForToken(code);
-            if (token) {
-              navigate("/", { replace: true });
-            }
+            if (token) navigate("/", { replace: true });
           } catch (error) {
             console.error("Error en callback:", error);
             navigate("/", { replace: true });
@@ -72,7 +66,6 @@ function App() {
     handleCallback();
   }, [location, exchangeCodeForToken, navigate, processingAuth]);
 
-  // Redirigir a login si no hay usuario autenticado y no es una ruta de auth
   useEffect(() => {
     if (!authLoading && !user) {
       if (location.pathname !== "/login" && location.pathname !== "/register") {
@@ -89,7 +82,6 @@ function App() {
     );
   }
 
-  // Si no hay usuario autenticado, mostrar formulario de login/registro a pantalla completa
   if (!user) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-purple-900">
@@ -102,14 +94,15 @@ function App() {
     );
   }
 
-  // Interfaz para usuario autenticado
+  // Ancho del aside según estado expandido
+  const asideWidthClass = asideExpanded ? "lg:w-[42%]" : "lg:w-[25%]";
+  const mainPadClass = token && !isMobile
+    ? asideExpanded ? "lg:pr-[42%]" : "lg:pr-[25%]"
+    : "";
+
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-black via-gray-900 to-purple-900">
-      <div
-        className={`flex-1 flex flex-col transition-all duration-300 ${
-          token && !isMobile ? "lg:pr-[25%]" : "w-full"
-        }`}
-      >
+      <div className={`flex-1 flex flex-col transition-all duration-300 ${mainPadClass}`}>
         <Navbar />
 
         <div className="flex-1 pb-24 px-4 sm:px-6 lg:px-8">
@@ -117,7 +110,6 @@ function App() {
             <Route path="/playlist/:playlistId" element={<PlaylistDetail />} />
             <Route path="/my-spotify" element={<MySpotify />} />
             <Route path="/my-perfil" element={<MyProfile />} />
-
             <Route
               path="/mysounds"
               element={
@@ -134,13 +126,32 @@ function App() {
         <Footer />
       </div>
 
+      {/* Aside desktop */}
       {token && !isMobile && (
-        <aside className="fixed right-0 top-0 h-screen w-full lg:w-1/4 bg-gray-950 border-l border-purple-900 overflow-hidden transition-all duration-300 z-30">
-          <div className="h-full w-full overflow-y-auto px-4 sm:px-6 lg:px-4 py-6 scrollbar-thin scrollbar-thumb-purple-900 scrollbar-track-gray-800">
+        <aside
+          className={`fixed right-0 top-0 h-screen ${asideWidthClass} bg-gray-950 border-l border-purple-900/60 overflow-hidden transition-all duration-300 z-30`}
+        >
+          <button
+            onClick={() => setAsideExpanded((v) => !v)}
+            className="absolute top-3 left-3 z-10 p-1.5 rounded-lg bg-gray-800/80 hover:bg-gray-700 border border-gray-700/50 text-gray-400 hover:text-white transition-all duration-200"
+            aria-label={asideExpanded ? "Colapsar panel" : "Expandir panel"}
+            title={asideExpanded ? "Colapsar" : "Expandir"}
+          >
+            <svg
+              className={`w-4 h-4 transition-transform duration-300 ${asideExpanded ? "rotate-0" : "rotate-180"}`}
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+            </svg>
+          </button>
+          <div className="h-full w-full overflow-y-auto px-4 py-6 pt-12 scrollbar-thin scrollbar-thumb-purple-900 scrollbar-track-gray-800">
             <Dashboard sidebarMode={true} />
           </div>
         </aside>
       )}
+
+      {/* Botón flotante + panel full-screen mobile */}
+      {token && isMobile && <MobilePlayerDrawer />}
     </div>
   );
 }

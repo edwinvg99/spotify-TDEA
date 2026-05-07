@@ -22,11 +22,11 @@ const PlaylistDetail = ({ playlistId, isInSidebar = false }) => {
 
   const handlePlayTrack = async (track) => {
     if (!isReady) {
-      console.log("El reproductor no está listo aún");
+      console.log("El reproductor no está listo aún — espera un momento.");
       return;
     }
     try {
-      await playNewTrack(track.uri);
+      await playNewTrack(track.uri, playlist?.uri ?? null);
     } catch (error) {
       console.error("Error reproduciendo track:", error);
     }

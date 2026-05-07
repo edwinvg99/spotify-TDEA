@@ -1,84 +1,110 @@
+const lineup = [
+  { name: "DJ Nova", genre: "Tech House", time: "22:00", headliner: true },
+  { name: "Kara Syn", genre: "Drum & Bass", time: "20:30", headliner: false },
+  { name: "Maxo",     genre: "Techno",      time: "00:00", headliner: false },
+];
+
+
+
 const AboutSection = () => {
   return (
-    <section className="relative py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8  rounded-2xl">
-      {/* Fondo con gradiente */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 via-black to-black rounded-2xl"></div>
+    <section className="relative overflow-hidden rounded-2xl">
+      {/* Fondo animado */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0d0d1a] to-black" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-900/40 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-pink-900/20 via-transparent to-transparent" />
 
-      {/* Contenedor principal */}
-      <div className="relative max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-          {/* Imagen del DJ */}
-          <div className="relative aspect-[4/3] md:aspect-[16/9] lg:aspect-[4/3]">
-            <img
-              src="/assets/dj-banner.jpeg"
-              alt="DJ Profile"
-              className="w-full h-full object-cover rounded-2xl shadow-2xl transform hover:scale-[1.02] transition-transform duration-300"
-            />
-          </div>
+      {/* Líneas decorativas */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/60 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-500/40 to-transparent" />
 
-          {/* Contenido de texto */}
-          <div className="space-y-6 md:space-y-8 ">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
-              Tu DJ Favorito
-            </h2>
-            <div className="space-y-4 text-gray-300">
-              <p className="text-base sm:text-lg md:text-xl leading-relaxed">
-                Con más de una década de experiencia en la escena musical, me
-                especializo en crear experiencias únicas mezclando diferentes
-                géneros y estilos.
+      <div className="relative px-4 sm:px-6 lg:px-8 py-10 sm:py-14 md:py-20 max-w-7xl mx-auto">
+
+        {/* Badge de evento */}
+        <div className="flex justify-center mb-6">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs sm:text-sm font-semibold tracking-widest uppercase">
+            <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+            Próximo Evento
+          </span>
+        </div>
+
+        {/* Título principal */}
+        <div className="text-center mb-10 space-y-3">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-none tracking-tight">
+            NEON{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400">
+              OVERDRIVE
+            </span>
+          </h2>
+          <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto">
+            Una noche de sonido inmersivo, luces y energía sin límites.
+          </p>
+        </div>
+
+        {/* Info del evento */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10 max-w-2xl mx-auto">
+          {[
+            { label: "Fecha", value: "15 · JUN · 2025" },
+            { label: "Lugar", value: "Club Nexus, Medellín" },
+            { label: "Puertas", value: "20:00 hrs" },
+          ].map((item) => (
+            <div
+              key={item.label}
+              className="text-center p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm"
+            >
+              <p className="text-xs uppercase tracking-widest text-gray-500 mb-1">
+                {item.label}
               </p>
-              <p className="text-base sm:text-lg md:text-xl leading-relaxed">
-                Desde eventos corporativos hasta festivales masivos, cada set es
-                una aventura sonora diseñada para hacer vibrar a la audiencia.
+              <p className="text-white font-bold text-sm sm:text-base">
+                {item.value}
               </p>
             </div>
+          ))}
+        </div>
 
-            {/* Estadísticas */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6">
-              <div className="text-center p-3 bg-purple-900/30 rounded-lg backdrop-blur-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-purple-400">
-                  10+
+        {/* Lineup */}
+        <div className="mb-10">
+          <p className="text-center text-xs uppercase tracking-widest text-gray-500 mb-4">
+            Line-up
+          </p>
+          <div className="space-y-3 max-w-lg mx-auto">
+            {lineup.map((artist) => (
+              <div
+                key={artist.name}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl border transition-all duration-300 hover:scale-[1.01] ${
+                  artist.headliner
+                    ? "bg-gradient-to-r from-purple-900/40 to-pink-900/20 border-purple-500/50"
+                    : "bg-white/5 border-white/10"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  {artist.headliner && (
+                    <span className="text-xs font-bold text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full">
+                      HEADLINER
+                    </span>
+                  )}
+                  <div>
+                    <p className="text-white font-bold text-sm sm:text-base">
+                      {artist.name}
+                    </p>
+                    <p className="text-gray-500 text-xs">{artist.genre}</p>
+                  </div>
                 </div>
-                <div className="text-sm sm:text-base text-gray-300">
-                  Años de experiencia
-                </div>
+                <span className="text-purple-400 font-mono text-sm font-semibold">
+                  {artist.time}
+                </span>
               </div>
-              <div className="text-center p-3 bg-purple-900/30 rounded-lg backdrop-blur-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-purple-400">
-                  500+
-                </div>
-                <div className="text-sm sm:text-base text-gray-300">
-                  Eventos
-                </div>
-              </div>
-              <div className="text-center p-3 bg-purple-900/30 rounded-lg backdrop-blur-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-purple-400">
-                  50k+
-                </div>
-                <div className="text-sm sm:text-base text-gray-300">
-                  Seguidores
-                </div>
-              </div>
-              <div className="text-center p-3 bg-purple-900/30 rounded-lg backdrop-blur-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-purple-400">
-                  1M+
-                </div>
-                <div className="text-sm sm:text-base text-gray-300">
-                  Reproducciones
-                </div>
-              </div>
-            </div>
-
-            {/* Botones de acción */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-6">
-              <button className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25">
-                Contratar ahora
-              </button>
-              <button className="px-6 py-3 border-2 border-purple-600 text-purple-400 hover:bg-purple-600/10 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                Ver calendario
-              </button>
-            </div>
+            ))}
           </div>
+        </div>
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button className="px-8 py-3.5 rounded-full font-bold text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 shadow-lg shadow-purple-900/40 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/40 text-sm sm:text-base">
+            Conseguir Entradas
+          </button>
+          <button className="px-8 py-3.5 rounded-full font-bold text-purple-300 border border-purple-500/40 hover:bg-purple-500/10 hover:border-purple-400/60 transition-all duration-300 hover:scale-105 text-sm sm:text-base">
+            Ver Todos los Eventos
+          </button>
         </div>
       </div>
     </section>
