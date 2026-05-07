@@ -1,98 +1,102 @@
-# 🎵 Spotify TDEA
+# 🎵 BeatLog
 
-Una App que integra Spotify desarrollado con **React** y **Vite**, que se integra con la **API de Spotify**, permitiendo la reproducción de música, visualizacion de playlists y perfiles de usuario. Cuenta con **autenticación dual** (Spotify y Firebase) y un reproductor de música con el **SDK oficial de Spotify**.
+Aplicación web personal de música construida con **React + Vite**, integrada con la **API y SDK de Spotify**. Permite reproducir música, explorar playlists, ver estadísticas de escucha y descubrir las playlists de otros usuarios. Cuenta con autenticación dual (Firebase + Spotify OAuth) y un reproductor completo con el SDK oficial de Spotify.
 
-
-
-## 📋 Tabla de Contenidos
-
-- [🚀 Características](#-características)
-- [💻 Tecnologías](#-tecnologías)
-- [🔐 Componentes principales](#-autenticación)
-- [🛠️ Instalación](#️-instalación)
+> Desarrollado por **Edwin VG** — [github.com/edwinvg99](https://github.com/edwinvg99)
 
 ---
 
 ## 🚀 Características
 
-- 🔐 **Autenticación dual**: Firebase Auth + OAuth de Spotify  
-- 👤 **Perfil de usuario**: Visualización y edición  
-- 🎶 **Exploración de música**: Playlists y canciones  
-- ▶️ **Reproductor de música**: con el SDK de Spotify  
-- 📱 **Diseño responsivo**: Adaptado a móviles y escritorio  
-- ⏱️ **Interfaz en tiempo real**: Progreso de reproducción  
-- 📊 **Estadísticas de Spotify**: Artistas y géneros favoritos  
-- 🎧 **Galería de eventos DJ**: Sección para promoción de eventos  
+- 🔐 **Autenticación dual** — Firebase Auth + OAuth de Spotify
+- 🎧 **Reproductor completo** — Reproducir, pausar, siguiente/anterior, volumen y barra de progreso
+- 📱 **Panel móvil flotante** — Acceso al reproductor desde cualquier pantalla sin interrumpir la música
+- 📋 **Playlists** — Exploración y reproducción desde contexto
+- 📊 **Estadísticas personales** — Artistas, géneros y historial de reproducción
+- 👥 **Comunidad** — Ve las playlists públicas de otros usuarios de la app
+- 👤 **Perfil editable** — Con foto de perfil y datos de usuario
+- 🎪 **Sección de eventos** — Plantilla para promoción de eventos musicales
+- 📐 **Diseño responsive** — Mobile-first, funciona en cualquier dispositivo
 
 ---
 
-## 💻 Tecnologías
+## 💻 Stack
 
-- **Frontend**: React 18 + Vite  
-- **Estilos**: TailwindCSS  
-- **Autenticación**: Firebase Authentication  
-- **Base de datos**: Firebase Firestore  
-- **Almacenamiento**: Firebase Storage  
-- **Ruteo**: React Router v6  
-- **Notificaciones**: React Toastify  
-- **APIs**: Spotify Web API, Spotify Web Playback SDK  
-
----
-
-
-### 📁 Componentes Principales
-
-#### 🔐 Autenticación
-- `AuthContext.jsx`: Contexto central para autenticación con Firebase  
-- `loginApp.jsx`: Formulario de inicio de sesión  
-- `registerApp.jsx`: Registro con carga de foto  
-- `signInGoogleApp.jsx`: Autenticación con Google  
-
-#### 👤 Perfil
-- `MyProfile.jsx`: Ver y editar perfil  
-- `ProfileSection.jsx`: Vista del perfil en el dashboard  
-
-#### 🎵 Música
-- `SpotifyPlayer.jsx`: Reproductor principal  
-- `PlayButton.jsx`: Botón de reproducción/pausa  
-- `ProgressBar.jsx`: Barra de progreso  
-- `TrackInfo.jsx`: Información de la canción actual  
-
-#### 📋 Playlists
-- `PlaylistGrid.jsx`: Cuadrícula de playlists  
-- `PlaylistDetail.jsx`: Vista detallada de una playlist  
-- `PlaylistCard.jsx`: Tarjeta individual  
-
-#### 🎛️ Dashboard
-- `Dashboard.jsx`: Panel principal de usuario  
-- `MySpotify.jsx`: Estadísticas personales  
-
-#### 🎣 Hooks Personalizados
-- `useSpotifySDK.jsx`: Integración con el SDK  
-- `useAuth.jsx`: Acceso al contexto de autenticación  
-
-#### 🌐 Contextos
-- `SpotifyContext.jsx`: Manejo de datos y tokens de Spotify  
-- `AuthContext.jsx`: Manejo global de sesión con Firebase  
+| Capa | Tecnología |
+|---|---|
+| Frontend | React 19 + Vite 6 |
+| Estilos | Tailwind CSS v4 |
+| Auth | Firebase Authentication |
+| Base de datos | Firebase Firestore |
+| Almacenamiento | Firebase Storage |
+| Ruteo | React Router v7 |
+| Música | Spotify Web API + Playback SDK |
+| Notificaciones | React Toastify |
+| Deploy | Railway |
 
 ---
 
-## 🛠️ Instalación
+## 🛠️ Instalación local
 
 ```bash
 # Clona el repositorio
 git clone https://github.com/edwinvg99/spotify-TDEA.git
-cd spotify-clone-tdea
+cd spotify-TDEA
 
 # Instala dependencias
 npm install
 
-# Crea un archivo .env en la raíz con las variables necesarias
-VITE_SPOTIFY_CLIENT_ID=
-VITE_SPOTIFY_CLIENT_SECRET=
-VITE_REDIRECT_URI=http://127.0.0.1:8000/callback
-VITE_SPOTIFY_SDK_SCRIPT=https://sdk.scdn.co/spotify-player.js
-VITE_PLAYER_NAME=Spotify Clone TDEA
+# Crea el archivo de variables de entorno
+cp .env.example .env
+```
 
-# Ejecuta el servidor de desarrollo
+Edita `.env` con tus credenciales:
+
+```env
+VITE_SPOTIFY_CLIENT_ID=tu_client_id
+VITE_REDIRECT_URI=http://127.0.0.1:8000/callback
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+```
+
+```bash
+# Servidor de desarrollo
 npm run dev
+```
+
+---
+
+## 🚢 Deploy en Railway
+
+```bash
+# Build
+npm run build
+
+# Start (Railway usa $PORT automáticamente)
+npm run start
+```
+
+En Railway > Variables, agrega todas las variables del `.env` y cambia `VITE_REDIRECT_URI` a la URL de tu app en Railway. Recuerda también agregar esa URL como Redirect URI en el [Spotify Developer Dashboard](https://developer.spotify.com/dashboard).
+
+---
+
+## 📁 Estructura principal
+
+```
+src/
+├── features/
+│   ├── authFirebase/     # Login, registro, contexto Firebase
+│   ├── authSpotify/      # OAuth Spotify, SDK context
+│   ├── dashboard/        # Panel principal, MySpotify, OtherUsersPlaylists
+│   ├── dj/               # Sección de eventos
+│   ├── playLists/        # Grid y detalle de playlists
+│   ├── player/           # Reproductor, volumen, progreso, drawer móvil
+│   └── userProfile/      # Perfil, búsqueda de usuarios
+└── shared/
+    ├── components/        # Navbar, Footer, layout general
+    └── hooks/             # useSpotifySDK
+```
