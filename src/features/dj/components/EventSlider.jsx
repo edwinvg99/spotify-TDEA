@@ -12,11 +12,11 @@ const events = [
   },
   {
     id: 2,
-    title: "Neon Night Party",
+    title: "BeatLog Night Party",
     description:
       "Una noche de música electrónica en el mejor club de la ciudad.",
     date: "2024-08-20",
-    location: "Club Neon",
+    location: "Club BeatLog",
     image: "/assets/event2.png",
   },
   {

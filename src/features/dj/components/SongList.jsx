@@ -18,7 +18,7 @@ const songs = [
   {
     title: "Electric Dreams",
     artist: "DJ Nova",
-    album: "Neon Nights",
+    album: "BeatLog Nights",
     duration: "5:02",
     coverImage: "/assets/song3.jpg",
   },

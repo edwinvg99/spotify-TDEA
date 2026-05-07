@@ -31,7 +31,7 @@ const AboutSection = () => {
         {/* Título principal */}
         <div className="text-center mb-10 space-y-3">
           <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-none tracking-tight">
-            NEON{" "}
+            BeatLog{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400">
               OVERDRIVE
             </span>
