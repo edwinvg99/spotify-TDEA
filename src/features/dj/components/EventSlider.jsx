@@ -1,29 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const events = [
   {
     id: 1,
     title: "Sunset Beats Festival",
-    description:
-      "Un festival inolvidable en la playa con los mejores DJs internacionales.",
-    date: "2024-07-15",
+    subtitle: "Los mejores DJs internacionales",
+    date: "15 JUL 2024",
     location: "Playa del Sol",
     image: "/assets/event1.png",
   },
   {
     id: 2,
     title: "BeatLog Night Party",
-    description:
-      "Una noche de música electrónica en el mejor club de la ciudad.",
-    date: "2024-08-20",
+    subtitle: "Musica electronica en el mejor club",
+    date: "20 AGO 2024",
     location: "Club BeatLog",
     image: "/assets/event2.png",
   },
   {
     id: 3,
     title: "Urban Beats Festival",
-    description: "Festival urbano con los mejores beats y DJs locales.",
-    date: "2024-09-10",
+    subtitle: "Los mejores beats y DJs locales",
+    date: "10 SEP 2024",
     location: "Plaza Central",
     image: "/assets/event3.png",
   },
@@ -32,30 +30,31 @@ const events = [
 const EventSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev === events.length - 1 ? 0 : prev + 1));
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
+
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === events.length - 1 ? 0 : prevIndex + 1
-    );
+    setCurrentIndex((prev) => (prev === events.length - 1 ? 0 : prev + 1));
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? events.length - 1 : prevIndex - 1
-    );
+    setCurrentIndex((prev) => (prev === 0 ? events.length - 1 : prev - 1));
   };
 
   return (
-    <div className="relative w-full overflow-hidden rounded-xl shadow-2xl">
-      {/* Container principal */}
-      <div className="relative min-h-[200px] sm:min-h-[300px] md:min-h-[400px] lg:min-h-[500px]">
-        {/* Imágenes */}
+    <div className="relative w-full overflow-hidden rounded-2xl">
+      <div className="relative h-[280px] sm:h-[380px] md:h-[480px] lg:h-[560px]">
         {events.map((event, index) => (
           <div
             key={event.id}
-            className={`absolute w-full h-full transition-all duration-700 ease-in-out transform ${
+            className={`absolute inset-0 transition-all duration-700 ease-in-out ${
               index === currentIndex
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 "
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-105"
             }`}
           >
             <img
@@ -63,77 +62,60 @@ const EventSlider = () => {
               alt={event.title}
               className="w-full h-full object-cover"
             />
-            {/* Overlay con degradado */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-            {/* Contenido del evento */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 text-white">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">
-                {event.title}
-              </h3>
-              <p className="text-sm sm:text-base md:text-lg mb-2 text-gray-200">
-                {event.description}
-              </p>
-              <div className="flex flex-wrap gap-2 sm:gap-4 items-center">
-                <span className="bg-purple-600 px-3 py-1 rounded-full text-xs sm:text-sm">
-                  {event.date}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+            <div className="absolute inset-0 flex flex-col justify-end sm:justify-center p-6 sm:p-10 md:p-16 lg:p-20">
+              <div className="max-w-2xl space-y-3 sm:space-y-4">
+                <span className="inline-block px-3 py-1 rounded-full bg-purple-600/80 text-white text-xs sm:text-sm font-semibold tracking-wider uppercase backdrop-blur-sm">
+                  {event.date} &mdash; {event.location}
                 </span>
-                <span className="text-xs sm:text-sm text-gray-300">
-                  {event.location}
-                </span>
+
+                <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[0.95] tracking-tight">
+                  {event.title}
+                </h2>
+
+                <p className="text-base sm:text-lg md:text-xl text-gray-300 font-medium max-w-lg">
+                  {event.subtitle}
+                </p>
+
+                <div className="pt-2">
+                  <button className="px-6 py-2.5 sm:px-8 sm:py-3 rounded-full font-bold text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 shadow-lg shadow-purple-900/40 transition-all duration-300 hover:scale-105 text-sm sm:text-base">
+                    Ver Evento
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         ))}
 
-        {/* Botones de navegación */}
         <button
           onClick={prevSlide}
-          className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 sm:p-3 rounded-r-lg transition-all duration-300"
+          className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white transition-all duration-300 border border-white/20"
         >
-          <svg
-            className="w-4 h-4 sm:w-6 sm:h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
+          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 sm:p-3 rounded-l-lg transition-all duration-300"
+          className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white transition-all duration-300 border border-white/20"
         >
-          <svg
-            className="w-4 h-4 sm:w-6 sm:h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
+          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
 
-        {/* Indicadores de posición */}
-        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+        <div className="absolute bottom-5 left-6 sm:left-10 md:left-16 lg:left-20 flex gap-2">
           {events.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+              className={`h-1 rounded-full transition-all duration-500 ${
                 index === currentIndex
-                  ? "bg-purple-600 scale-125"
-                  : "bg-white/50 hover:bg-white/80"
+                  ? "w-8 bg-purple-500"
+                  : "w-4 bg-white/30 hover:bg-white/50"
               }`}
             />
           ))}
