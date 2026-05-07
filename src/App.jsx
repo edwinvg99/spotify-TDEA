@@ -84,7 +84,7 @@ function App() {
 
   if (!user) {
     return (
-      <div className="h-screen w-full flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-purple-900">
+      <div className="h-screen w-full flex items-center justify-center bg-gradient-to-b from-slate-800 via-gray-900 to-purple-950">
         <Routes>
           <Route path="/register" element={<SignUp />} />
           <Route path="*" element={<Login />} />
@@ -101,7 +101,7 @@ function App() {
     : "";
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-black via-gray-900 to-purple-900">
+    <div className="flex min-h-screen bg-gradient-to-b from-slate-950 via-gray-900 to-purple-950">
       <div className={`flex-1 flex flex-col transition-all duration-300 ${mainPadClass}`}>
         <Navbar />
 

@@ -104,26 +104,15 @@ const Navbar = () => {
           </li>
 
           {token && (
-            <>
-              <li>
-                <Link
-                  to="/my-spotify"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block py-2 hover:text-green-400 transition-colors"
-                >
-                  Mi Spotify
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/Mysounds"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block py-2 hover:text-green-400 transition-colors"
-                >
-                  Mi musica
-                </Link>
-              </li>
-            </>
+            <li>
+              <Link
+                to="/my-spotify"
+                onClick={() => setIsMenuOpen(false)}
+                className="block py-2 hover:text-green-400 transition-colors"
+              >
+                Mi Spotify
+              </Link>
+            </li>
           )}
           {!token && !loading && (
             <li className="py-2">
