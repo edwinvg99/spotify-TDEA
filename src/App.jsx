@@ -84,7 +84,7 @@ function App() {
 
   if (!user) {
     return (
-      <div className="h-screen w-full flex items-center justify-center bg-gradient-to-b from-slate-800 via-gray-900 to-purple-950">
+      <div className="h-screen w-full flex items-center justify-center bg-gradient-to-b from-slate-800 via-gray-900 to-emerald-950">
         <Routes>
           <Route path="/register" element={<SignUp />} />
           <Route path="*" element={<Login />} />
@@ -101,7 +101,7 @@ function App() {
     : "";
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-b from-slate-950 via-gray-900 to-purple-950">
+    <div className="flex min-h-screen bg-gradient-to-b from-slate-950 via-gray-900 to-emerald-950">
       <div className={`flex-1 flex flex-col transition-all duration-300 ${mainPadClass}`}>
         <Navbar />
 
@@ -129,7 +129,7 @@ function App() {
       {/* Aside desktop */}
       {token && !isMobile && (
         <aside
-          className={`fixed right-0 top-0 h-screen ${asideWidthClass} bg-gray-950 border-l border-purple-900/60 overflow-hidden transition-all duration-300 z-30`}
+          className={`fixed right-0 top-0 h-screen ${asideWidthClass} bg-gray-950 border-l border-emerald-900/60 overflow-hidden transition-all duration-300 z-30`}
         >
           <button
             onClick={() => setAsideExpanded((v) => !v)}
@@ -144,7 +144,7 @@ function App() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
             </svg>
           </button>
-          <div className="h-full w-full overflow-y-auto px-4 py-6 pt-12 scrollbar-thin scrollbar-thumb-purple-900 scrollbar-track-gray-800">
+          <div className="h-full w-full overflow-y-auto px-4 py-6 pt-12 scrollbar-thin scrollbar-thumb-emerald-900 scrollbar-track-gray-800">
             <Dashboard sidebarMode={true} />
           </div>
         </aside>

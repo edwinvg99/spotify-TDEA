@@ -8,7 +8,7 @@ const SearchBar = ({ searchTerm, setSearchTerm, isSidebar }) => {
         placeholder="Buscar playlist..."
         className={`
           bg-gray-700 text-white text-sm rounded-lg focus:outline-none focus:ring-2 
-          focus:ring-purple-400 placeholder-gray-400
+          focus:ring-emerald-400 placeholder-gray-400
           ${isSidebar ? 'px-3 py-1 w-40' : 'px-4 py-2 w-64'}
         `}
       />

@@ -41,15 +41,15 @@ const PlaylistCard = ({ playlist, userName }) => {
       </div>
 
       <div className="min-w-0">
-        <h3 className="text-white font-medium text-xs sm:text-sm truncate group-hover:text-purple-400 mb-0.5">
+        <h3 className="text-white font-medium text-xs sm:text-sm truncate group-hover:text-emerald-400 mb-0.5">
           {playlist.name}
         </h3>
         <p className="text-gray-400 text-xs mb-1">{playlist.tracks?.total || 0} canciones</p>
         <div className="flex items-center gap-1.5 min-w-0">
-          <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0">
+          <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 bg-emerald-600 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0">
             {userName.charAt(0).toUpperCase()}
           </div>
-          <p className="text-purple-400 text-xs font-medium truncate">{userName}</p>
+          <p className="text-emerald-400 text-xs font-medium truncate">{userName}</p>
         </div>
         {playlist.description && (
           <p className="text-gray-500 text-xs mt-1 line-clamp-1">{playlist.description}</p>

@@ -166,7 +166,7 @@ function Register() {
           <input
             type="text"
             placeholder="Tu nombre"
-            className="w-full px-4 py-2 bg-[#0F172A] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 bg-[#0F172A] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             value={fname}
             onChange={(e) => setFname(e.target.value)}
             required
@@ -179,7 +179,7 @@ function Register() {
           <input
             type="text"
             placeholder="Tu apellido"
-            className="w-full px-4 py-2 bg-[#0F172A] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 bg-[#0F172A] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             value={lname}
             onChange={(e) => setLname(e.target.value)}
           />
@@ -190,7 +190,7 @@ function Register() {
           <label className="block text-sm text-gray-400">Foto de perfil</label>
           <div className="flex items-center space-x-4">
             {photoPreview ? (
-              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-purple-500">
+              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-emerald-500">
                 <img 
                   src={photoPreview} 
                   alt="Vista previa" 
@@ -205,7 +205,7 @@ function Register() {
               </div>
             )}
             
-            <label className="cursor-pointer px-4 py-2 bg-purple-800 hover:bg-purple-700 text-white rounded-lg transition flex items-center">
+            <label className="cursor-pointer px-4 py-2 bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg transition flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
@@ -226,7 +226,7 @@ function Register() {
           <input
             type="email"
             placeholder="Correo electrónico"
-            className="w-full px-4 py-2 bg-[#0F172A] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 bg-[#0F172A] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -239,7 +239,7 @@ function Register() {
           <input
             type="password"
             placeholder="Contraseña segura"
-            className="w-full px-4 py-2 bg-[#0F172A] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 bg-[#0F172A] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -249,7 +249,7 @@ function Register() {
         {/* Botón de registro */}
         <button
           type="submit"
-          className="w-full bg-purple-800 text-white font-semibold py-3 rounded-lg transition-all hover:bg-sky-600 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-emerald-700 text-white font-semibold py-3 rounded-lg transition-all hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={loading}
         >
           {loading ? "Registrando..." : "Registrarse"}
@@ -258,7 +258,7 @@ function Register() {
         {/* Enlace a login */}
         <p className="text-gray-200 text-center">
           ¿Ya tienes una cuenta?{" "}
-          <Link to="/login" className="text-sky-700 hover:underline hover:text-sky-400">
+          <Link to="/login" className="text-emerald-500 hover:underline hover:text-green-400">
             Inicia sesión
           </Link>
         </p>

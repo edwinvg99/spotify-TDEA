@@ -72,7 +72,7 @@ function Login() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 bg-[#0F172A] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 bg-[#0F172A] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             placeholder="ejemplo@correo.com"
             required
           />
@@ -85,7 +85,7 @@ function Login() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 bg-[#0F172A] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 bg-[#0F172A] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             placeholder="Tu contraseña"
             required
           />
@@ -95,7 +95,7 @@ function Login() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-purple-800 text-white font-semibold py-3 rounded-lg transition-all hover:bg-sky-600 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-emerald-700 text-white font-semibold py-3 rounded-lg transition-all hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? "Iniciando..." : "Iniciar Sesión"}
         </button>
@@ -105,7 +105,7 @@ function Login() {
           ¿No tienes cuenta?{" "}
           <Link
             to="/register"
-            className="text-sky-700 hover:underline hover:text-sky-400"
+            className="text-emerald-500 hover:underline hover:text-green-400"
           >
             Regístrate aquí
           </Link>

@@ -9,8 +9,8 @@ const VisibilityIcon = ({ isPublic, isCollaborative, size = "normal" }) => {
     switch (status) {
       case "collaborative":
         return {
-          bg: "bg-blue-500/20",
-          text: "text-blue-400",
+          bg: "bg-teal-500/20",
+          text: "text-teal-400",
           label: "Colaborativa",
           icon: (
             <svg
@@ -46,8 +46,8 @@ const VisibilityIcon = ({ isPublic, isCollaborative, size = "normal" }) => {
         };
       case "private":
         return {
-          bg: "bg-purple-500/20",
-          text: "text-purple-400",
+          bg: "bg-emerald-500/20",
+          text: "text-emerald-400",
           label: "Privada",
           icon: (
             <svg

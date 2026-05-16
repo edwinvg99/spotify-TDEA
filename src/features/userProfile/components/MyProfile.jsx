@@ -198,11 +198,11 @@ function MyProfile() {
       </div>
 
       {/* Tarjeta principal del perfil */}
-      <div className="bg-gray-800 bg-opacity-50 rounded-xl shadow-lg overflow-hidden backdrop-blur-sm border border-purple-900/30">
+      <div className="bg-gray-800 bg-opacity-50 rounded-xl shadow-lg overflow-hidden backdrop-blur-sm border border-emerald-900/30">
         <div className="md:flex">
           {/* Sección izquierda: foto y datos básicos */}
-          <div className="md:w-1/3 bg-gradient-to-br from-purple-900 to-gray-900 p-6 flex flex-col items-center justify-center">
-            <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-4 border-purple-500 shadow-lg">
+          <div className="md:w-1/3 bg-gradient-to-br from-emerald-900 to-gray-900 p-6 flex flex-col items-center justify-center">
+            <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-4 border-emerald-500 shadow-lg">
               <img
                 src={
                   photoPreview ||
@@ -217,7 +217,7 @@ function MyProfile() {
               {`${userData.firstName} ${userData.lastName}`.trim() ||
                 "Usuario DJ Nova"}
             </h3>
-            <p className="text-purple-300 text-sm">{userData.email}</p>
+            <p className="text-emerald-300 text-sm">{userData.email}</p>
 
             {userData.createdAt && (
               <p className="text-gray-400 text-xs mt-2">
@@ -234,7 +234,7 @@ function MyProfile() {
                 Información Personal
                 <button
                   onClick={() => setIsEditing(!isEditing)}
-                  className="ml-3 text-sm text-purple-400 hover:text-purple-300"
+                  className="ml-3 text-sm text-emerald-400 hover:text-emerald-300"
                 >
                   {isEditing ? "Cancelar" : "Editar"}
                 </button>
@@ -307,7 +307,7 @@ function MyProfile() {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoading ? "Guardando..." : "Guardar cambios"}
                   </button>

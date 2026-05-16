@@ -19,7 +19,7 @@ const UserSearch = ({ sidebarMode = false }) => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Buscar usuarios de Spotify..."
-          className="flex-1 min-w-0 px-3 py-2.5 rounded-lg bg-gray-700 text-white text-sm placeholder-gray-400 border border-gray-600 focus:outline-none focus:border-purple-500 transition-colors"
+          className="flex-1 min-w-0 px-3 py-2.5 rounded-lg bg-gray-700 text-white text-sm placeholder-gray-400 border border-gray-600 focus:outline-none focus:border-emerald-500 transition-colors"
         />
         <button
           type="submit"

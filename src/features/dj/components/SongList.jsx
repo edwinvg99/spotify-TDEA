@@ -28,9 +28,9 @@ const SongList = () => (
       {artists.map((artist, idx) => (
         <div
           key={idx}
-          className="group relative flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-purple-500/30 transition-all duration-300"
+          className="group relative flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-emerald-500/30 transition-all duration-300"
         >
-          <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-purple-500/30 group-hover:ring-purple-500/60 transition-all duration-300">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-emerald-500/30 group-hover:ring-emerald-500/60 transition-all duration-300">
             <img
               src={artist.image}
               alt={artist.name}
@@ -42,11 +42,11 @@ const SongList = () => (
               {artist.name}
             </h3>
             <p className="text-gray-400 text-sm truncate">{artist.role}</p>
-            <p className="text-purple-400 text-xs font-semibold mt-1">
+            <p className="text-emerald-400 text-xs font-semibold mt-1">
               {artist.followers} seguidores
             </p>
           </div>
-          <button className="flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-bold border border-purple-500/40 text-purple-300 hover:bg-purple-500/10 transition-all duration-300">
+          <button className="flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-bold border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/10 transition-all duration-300">
             Seguir
           </button>
         </div>

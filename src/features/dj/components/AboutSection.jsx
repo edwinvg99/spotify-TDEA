@@ -99,7 +99,7 @@ const AboutSection = () => {
   ));
 
   const taglineChars = "EVENTS".split("").map((c, i) => (
-    <span key={i} className="char inline-block text-purple-400" style={{ opacity: 0 }}>
+    <span key={i} className="char inline-block text-emerald-400" style={{ opacity: 0 }}>
       {c}
     </span>
   ));
@@ -110,8 +110,8 @@ const AboutSection = () => {
         {/* Columna izquierda */}
         <div className="flex-1 space-y-5">
           <div ref={badgeRef} className="flex items-center gap-2" style={{ opacity: 0 }}>
-            <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
-            <span className="text-purple-300 text-xs sm:text-sm font-semibold tracking-widest uppercase">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-300 text-xs sm:text-sm font-semibold tracking-widest uppercase">
               La plataforma de eventos musicales
             </span>
           </div>
@@ -155,10 +155,10 @@ const AboutSection = () => {
             className="flex flex-wrap gap-3 pt-2"
             style={{ opacity: 0 }}
           >
-            <button className="px-7 py-3 rounded-full font-bold text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 shadow-lg shadow-purple-900/40 transition-all duration-300 hover:scale-105 text-sm sm:text-base">
+            <button className="px-7 py-3 rounded-full font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-lg shadow-emerald-900/40 transition-all duration-300 hover:scale-105 text-sm sm:text-base">
               Explorar Eventos
             </button>
-            <button className="px-7 py-3 rounded-full font-bold text-purple-300 border border-purple-500/40 hover:bg-purple-500/10 hover:border-purple-400/60 transition-all duration-300 hover:scale-105 text-sm sm:text-base">
+            <button className="px-7 py-3 rounded-full font-bold text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/10 hover:border-emerald-400/60 transition-all duration-300 hover:scale-105 text-sm sm:text-base">
               Publicar mi Evento
             </button>
           </div>
@@ -174,14 +174,14 @@ const AboutSection = () => {
               key={event.name}
               className={`event-item flex items-center justify-between px-4 py-3 rounded-xl border transition-all duration-300 hover:scale-[1.01] cursor-pointer ${
                 event.featured
-                  ? "bg-gradient-to-r from-purple-900/40 to-pink-900/20 border-purple-500/50"
+                  ? "bg-gradient-to-r from-emerald-900/40 to-teal-900/20 border-emerald-500/50"
                   : "bg-white/5 border-white/10 hover:border-white/20"
               }`}
               style={{ opacity: 0 }}
             >
               <div className="flex items-center gap-3">
                 {event.featured && (
-                  <span className="text-xs font-bold text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full whitespace-nowrap">
+                  <span className="text-xs font-bold text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full whitespace-nowrap">
                     DESTACADO
                   </span>
                 )}
@@ -193,7 +193,7 @@ const AboutSection = () => {
                 </div>
               </div>
               <div className="text-right flex-shrink-0 ml-3">
-                <p className="text-purple-400 font-mono text-xs font-semibold">
+                <p className="text-emerald-400 font-mono text-xs font-semibold">
                   {event.date}
                 </p>
                 <p className="text-gray-600 text-xs">{event.city}</p>
@@ -201,7 +201,7 @@ const AboutSection = () => {
             </div>
           ))}
 
-          <button className="w-full mt-2 py-2.5 rounded-xl text-xs font-semibold text-gray-400 border border-white/5 hover:border-purple-500/30 hover:text-purple-300 transition-all duration-300">
+          <button className="w-full mt-2 py-2.5 rounded-xl text-xs font-semibold text-gray-400 border border-white/5 hover:border-emerald-500/30 hover:text-emerald-300 transition-all duration-300">
             Ver todos los eventos →
           </button>
         </div>

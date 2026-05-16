@@ -6,7 +6,7 @@ import OtherUsersPlaylists from "../../dashboard/components/OtherUsersPlaylists"
 const StatCard = ({ title, value, icon }) => (
   <div className="bg-gray-800 rounded-xl p-4 sm:p-5 hover:bg-gray-700/80 transition-colors">
     <div className="flex items-center gap-3 sm:gap-4">
-      <div className="p-2.5 sm:p-3 bg-purple-600/80 rounded-lg shrink-0">{icon}</div>
+      <div className="p-2.5 sm:p-3 bg-emerald-600/80 rounded-lg shrink-0">{icon}</div>
       <div className="min-w-0">
         <p className="text-gray-400 text-xs sm:text-sm truncate">{title}</p>
         <p className="text-white text-xl sm:text-2xl font-bold">{value}</p>
@@ -149,7 +149,7 @@ const MySpotify = () => {
               {stats.topGenres.map((genre) => (
                 <span
                   key={genre}
-                  className="px-2 py-0.5 bg-purple-600/70 rounded-full text-white text-xs capitalize"
+                  className="px-2 py-0.5 bg-emerald-600/70 rounded-full text-white text-xs capitalize"
                 >
                   {genre}
                 </span>

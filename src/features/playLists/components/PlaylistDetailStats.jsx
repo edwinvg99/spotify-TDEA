@@ -30,7 +30,7 @@ const PlaylistStats = ({ playlist }) => {
         text={`Actualizada: ${formatDate(
           playlist.tracks.items[0]?.added_at || playlist.snapshot_id
         )}`}
-        color="purple"
+        color="emerald"
       />
     </div>
   );

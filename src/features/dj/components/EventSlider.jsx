@@ -68,7 +68,7 @@ const EventSlider = () => {
 
             <div className="absolute inset-0 flex flex-col justify-end sm:justify-center p-6 sm:p-10 md:p-16 lg:p-20">
               <div className="max-w-2xl space-y-3 sm:space-y-4">
-                <span className="inline-block px-3 py-1 rounded-full bg-purple-600/80 text-white text-xs sm:text-sm font-semibold tracking-wider uppercase backdrop-blur-sm">
+                <span className="inline-block px-3 py-1 rounded-full bg-emerald-600/80 text-white text-xs sm:text-sm font-semibold tracking-wider uppercase backdrop-blur-sm">
                   {event.date} &mdash; {event.location}
                 </span>
 
@@ -81,7 +81,7 @@ const EventSlider = () => {
                 </p>
 
                 <div className="pt-2">
-                  <button className="px-6 py-2.5 sm:px-8 sm:py-3 rounded-full font-bold text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 shadow-lg shadow-purple-900/40 transition-all duration-300 hover:scale-105 text-sm sm:text-base">
+                  <button className="px-6 py-2.5 sm:px-8 sm:py-3 rounded-full font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-lg shadow-emerald-900/40 transition-all duration-300 hover:scale-105 text-sm sm:text-base">
                     Ver Evento
                   </button>
                 </div>
@@ -114,7 +114,7 @@ const EventSlider = () => {
               onClick={() => setCurrentIndex(index)}
               className={`h-1 rounded-full transition-all duration-500 ${
                 index === currentIndex
-                  ? "w-8 bg-purple-500"
+                  ? "w-8 bg-emerald-500"
                   : "w-4 bg-white/30 hover:bg-white/50"
               }`}
             />

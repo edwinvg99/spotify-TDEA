@@ -1,6 +1,6 @@
 const SongCard = ({ song }) => {
   return (
-    <div className="group relative bg-gradient-to-br from-purple-900/20 to-black rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/20 hover:scale-[1.02]">
+    <div className="group relative bg-gradient-to-br from-emerald-900/20 to-black rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/20 hover:scale-[1.02]">
       {/* Contenedor de imagen */}
       <div className="relative aspect-square">
         <img
@@ -12,7 +12,7 @@ const SongCard = ({ song }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         {/* Botón de reproducción */}
-        <button className="absolute bottom-4 right-4 bg-purple-600 p-3 rounded-full shadow-lg transform translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-purple-700 hover:scale-110">
+        <button className="absolute bottom-4 right-4 bg-emerald-600 p-3 rounded-full shadow-lg transform translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-emerald-700 hover:scale-110">
           <svg
             className="w-6 h-6 text-white"
             fill="currentColor"
@@ -53,7 +53,7 @@ const SongCard = ({ song }) => {
           {song.tags?.map((tag, index) => (
             <span
               key={index}
-              className="px-2 py-1 text-xs rounded-full bg-purple-900/50 text-purple-200"
+              className="px-2 py-1 text-xs rounded-full bg-emerald-900/50 text-emerald-200"
             >
               {tag}
             </span>

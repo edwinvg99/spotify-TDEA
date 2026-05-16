@@ -2,7 +2,7 @@ const Footer = () => (
   <footer className="bg-black bg-opacity-80 text-white py-5 mt-8">
     <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
       <div className="text-center sm:text-left">
-        <span className="font-bold text-purple-400 text-sm">BeatLog</span>
+        <span className="font-bold text-emerald-400 text-sm">BeatLog</span>
         <span className="text-gray-500 text-xs ml-2">
           &copy; {new Date().getFullYear()} 
         </span>

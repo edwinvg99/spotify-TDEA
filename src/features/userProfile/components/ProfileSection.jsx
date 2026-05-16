@@ -21,7 +21,7 @@ const ProfileSection = ({ profile, sidebarMode }) => {
               <img
                 src={profile.images[0].url}
                 alt="Foto de perfil"
-                className="rounded-full w-14 h-14 object-cover shadow-md border-2 border-purple-600 flex-shrink-0"
+                className="rounded-full w-14 h-14 object-cover shadow-md border-2 border-emerald-600 flex-shrink-0"
               />
             )}
             <div className="flex flex-col min-w-0">
@@ -35,7 +35,7 @@ const ProfileSection = ({ profile, sidebarMode }) => {
           </div>
           <button
             onClick={handleLogout}
-            className="bg-white hover:bg-red-700 hover:text-white text-purple text-xs py-1 px-3 rounded-full shadow transition-colors flex-shrink-0 self-end sm:self-auto"
+            className="bg-white hover:bg-red-700 hover:text-white text-emerald-600 text-xs py-1 px-3 rounded-full shadow transition-colors flex-shrink-0 self-end sm:self-auto"
           >
             Salir
           </button>
@@ -54,7 +54,7 @@ const ProfileSection = ({ profile, sidebarMode }) => {
           <img
             src={profile.images[0].url}
             alt="Foto de perfil"
-            className="rounded-full w-20 h-20 sm:w-24 sm:h-24 object-cover shadow-lg border-2 border-purple-600"
+            className="rounded-full w-20 h-20 sm:w-24 sm:h-24 object-cover shadow-lg border-2 border-emerald-600"
           />
         )}
         <div className="text-center sm:text-left">

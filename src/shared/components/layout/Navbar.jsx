@@ -49,7 +49,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/sobreMi"
-              className="hover:text-purple-400 transition-colors font-bold "
+              className="hover:text-emerald-400 transition-colors font-bold "
             >
               Sobre mí
             </Link>
@@ -57,7 +57,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/my-perfil"
-              className="hover:text-sky-400 transition-colors font-bold "
+              className="hover:text-green-400 transition-colors font-bold "
             >
               Mi perfil
             </Link>
@@ -88,7 +88,7 @@ const Navbar = () => {
             <Link
               to="/sobreMi"
               onClick={() => setIsMenuOpen(false)}
-              className="block py-2 hover:text-purple-400 transition-colors"
+              className="block py-2 hover:text-emerald-400 transition-colors"
             >
               Sobre mí
             </Link>
@@ -97,7 +97,7 @@ const Navbar = () => {
             <Link
               to="/my-perfil"
               onClick={() => setIsMenuOpen(false)}
-              className="block py-2 hover:text-sky-400 transition-colors"
+              className="block py-2 hover:text-green-400 transition-colors"
             >
               Mi perfil
             </Link>

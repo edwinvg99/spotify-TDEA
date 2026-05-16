@@ -2,11 +2,11 @@ import { useEffect, useRef } from "react";
 import { animate } from "animejs";
 
 const orbs = [
-  { size: 600, x: "15%", y: "10%", color: "rgba(139,92,246,0.12)", speed: 0.018 },
-  { size: 500, x: "70%", y: "60%", color: "rgba(236,72,153,0.09)", speed: 0.012 },
-  { size: 400, x: "50%", y: "30%", color: "rgba(99,102,241,0.10)", speed: 0.022 },
-  { size: 300, x: "85%", y: "15%", color: "rgba(168,85,247,0.08)", speed: 0.015 },
-  { size: 350, x: "10%", y: "75%", color: "rgba(217,70,239,0.07)", speed: 0.020 },
+  { size: 600, x: "15%", y: "10%", color: "rgba(16,185,129,0.12)", speed: 0.018 },
+  { size: 500, x: "70%", y: "60%", color: "rgba(20,184,166,0.09)", speed: 0.012 },
+  { size: 400, x: "50%", y: "30%", color: "rgba(52,211,153,0.10)", speed: 0.022 },
+  { size: 300, x: "85%", y: "15%", color: "rgba(6,182,212,0.08)", speed: 0.015 },
+  { size: 350, x: "10%", y: "75%", color: "rgba(34,197,94,0.07)", speed: 0.020 },
 ];
 
 const HomeBackground = () => {

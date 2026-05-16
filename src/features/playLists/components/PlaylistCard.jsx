@@ -15,7 +15,7 @@ const PlaylistCard = ({ playlist, isSidebar, onClick }) => {
         />
         <div className="flex-1 min-w-0 ">
           <div className="flex items-center gap-2 place-content-between">
-            <p className="text-white text-sm font-medium truncate group-hover:text-purple-400">
+            <p className="text-white text-sm font-medium truncate group-hover:text-emerald-400">
               {playlist.name}
             </p>
             <VisibilityIcon 
@@ -51,7 +51,7 @@ const PlaylistCard = ({ playlist, isSidebar, onClick }) => {
         </div>
       </div>
       <div className="mt-2">
-        <h3 className="text-white font-bold truncate group-hover:text-purple-400">
+        <h3 className="text-white font-bold truncate group-hover:text-emerald-400">
           {playlist.name}
         </h3>
         <p className="text-gray-400 text-sm mt-1">
